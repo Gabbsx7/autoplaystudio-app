@@ -2,6 +2,15 @@
 
 import { usePermissions } from './permissions'
 
+type Permission = {
+  canInviteUsers: boolean
+  canManageProjects: boolean
+  canDeleteProjects: boolean
+  canViewAllClients: boolean
+  canManageTeam: boolean
+  canViewFinancials: boolean
+}
+
 interface RoleGuardProps {
   children: React.ReactNode
   allowedRoles?: string[]
@@ -27,7 +36,7 @@ export function RoleGuard({
   }
 
   // Check permission
-  if (requiredPermission && !permissions[requiredPermission]) {
+  if (requiredPermission && !permissions[requiredPermission as keyof typeof permissions]) {
     return <>{fallback}</>
   }
 

@@ -80,9 +80,9 @@ export function PermissionProvider({
 
         if (error) throw error
 
-        const userRole = data.roles.name as Role
+        const userRole = (data as any)?.roles?.name as Role
         setRole(userRole)
-        setPermissions(getPermissionsForRole(userRole, data.is_primary))
+        setPermissions(getPermissionsForRole(userRole, (data as any)?.is_primary || false))
       } catch (error) {
         console.error('Error fetching user role:', error)
         setRole('guest')

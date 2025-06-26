@@ -1,10 +1,11 @@
+// apps/web/app/dashboard/layout.tsx - REMOVER TopNav daqui
 'use client'
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/auth/auth-provider'
 import { usePermissions } from '@/components/role-based/permissions'
-import TopNav from '@/components/layout/TopNav'
+// ❌ REMOVER esta linha: import TopNav from '@/components/layout/TopNav'
 
 export default function DashboardLayout({
   children,
@@ -37,8 +38,11 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <TopNav />
-      <main className="pt-11">{children}</main>
+      {/* ❌ REMOVER esta linha: <TopNav /> */}
+      {/* ❌ REMOVER esta linha: <main className="pt-11">{children}</main> */}
+
+      {/* ✅ APENAS isto: */}
+      {children}
     </div>
   )
 }

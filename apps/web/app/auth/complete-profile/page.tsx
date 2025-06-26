@@ -125,7 +125,7 @@ export default function CompleteProfilePage() {
                 Role:{' '}
                 {inviteInfo.role
                   .replace('_', ' ')
-                  .replace(/\b\w/g, (l) => l.toUpperCase())}
+                  .replace(/\b\w/g, (l: string) => l.toUpperCase())}
               </p>
             </div>
           )}

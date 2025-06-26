@@ -1,6 +1,8 @@
+'use client'
+
 import React, { useState } from 'react'
 import { MessageCircle } from 'lucide-react'
-import { useRealtimeChannel } from '../../hooks/useRealtimeChannel'
+import { useRealtimeChannel } from '@/hooks'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 const ChatDrawer: React.FC<{ channel?: string }> = ({
   channel = 'public-chat',
@@ -38,13 +40,11 @@ const ChatDrawer: React.FC<{ channel?: string }> = ({
               const text = i.value.trim()
               if (!text) return
               const supabase = createClientComponentClient()
-              supabase
-                .channel(channel)
-                .send({
-                  type: 'broadcast',
-                  event: 'message',
-                  payload: { id: Date.now().toString(), text },
-                })
+              supabase.channel(channel).send({
+                type: 'broadcast',
+                event: 'message',
+                payload: { id: Date.now().toString(), text },
+              })
               i.value = ''
             }}
             className="pt-2"
