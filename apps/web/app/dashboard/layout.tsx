@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/auth/auth-provider'
 import { usePermissions } from '@/components/role-based/permissions'
-import TopNav from '@/components/layout/top-nav'
+import TopNav from '@/components/layout/TopNav'
 
 export default function DashboardLayout({
   children,
