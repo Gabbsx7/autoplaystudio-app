@@ -1,83 +1,103 @@
 'use client'
 
 import React from 'react'
-import { File, Folder } from 'lucide-react'
+import {
+  MessageSquare,
+  CheckCircle,
+  Upload,
+  Clock,
+  MoreHorizontal,
+} from 'lucide-react'
 
 interface RecentUpdateProps {
   id: string
-  title: string
-  type: 'project' | 'client' | 'file'
-  subtitle?: string
-  projectCount?: number
-  assetCount?: number
+  type: 'comment' | 'milestone' | 'asset' | 'project'
+  message: string
+  project: string
+  time: string
+  user: string
   onClick?: () => void
 }
 
 export function RecentUpdateCard({
-  title,
   type,
-  subtitle,
-  projectCount,
-  assetCount,
+  message,
+  project,
+  time,
+  user,
   onClick,
 }: RecentUpdateProps) {
-  const renderIcon = () => {
+  const getIcon = () => {
     switch (type) {
-      case 'file':
-        return <File className="w-3 h-3.5" />
-      case 'client':
-        return (
-          <div className="w-6 h-7 relative">
-            <div className="w-3.5 h-3.5 left-[6px] top-[5.62px] absolute border border-neutral-800" />
-            <div className="w-3.5 h-3.5 left-[3px] top-[9px] absolute rounded-sm border border-neutral-800" />
-          </div>
-        )
+      case 'comment':
+        return <MessageSquare size={16} className="text-blue-500" />
+      case 'milestone':
+        return <CheckCircle size={16} className="text-green-500" />
+      case 'asset':
+        return <Upload size={16} className="text-purple-500" />
+      case 'project':
+        return <CheckCircle size={16} className="text-orange-500" />
       default:
-        return <File className="w-3.5 h-3.5" />
+        return <Clock size={16} className="text-gray-400" />
+    }
+  }
+
+  const getTypeLabel = () => {
+    switch (type) {
+      case 'comment':
+        return 'Comment'
+      case 'milestone':
+        return 'Milestone'
+      case 'asset':
+        return 'Asset'
+      case 'project':
+        return 'Project'
+      default:
+        return 'Update'
     }
   }
 
   return (
     <div
-      className="w-64 h-28 bg-white rounded shadow-[1px_2px_4px_0px_rgba(0,0,0,0.10)] p-4 cursor-pointer hover:shadow-md transition-shadow relative"
+      className="w-full rounded-lg border border-gray-100 p-4 cursor-pointer hover:shadow-sm transition-all duration-200 hover:border-gray-200"
       onClick={onClick}
     >
       <div className="flex items-start gap-3">
-        <div className="mt-1 text-neutral-800">{renderIcon()}</div>
-
-        <div className="flex-1 min-w-0">
-          <h4 className="text-black text-xs font-medium font-['Inter'] line-clamp-2 mb-1">
-            {title}
-          </h4>
-
-          {type === 'client' &&
-          (projectCount !== undefined || assetCount !== undefined) ? (
-            <div className="flex gap-4 mt-auto">
-              {projectCount !== undefined && (
-                <span className="text-neutral-500 text-[10px] font-medium font-['Inter']">
-                  {projectCount} Projects
-                </span>
-              )}
-              {assetCount !== undefined && (
-                <span className="text-neutral-400 text-[10px] font-medium font-['Inter']">
-                  {assetCount} Assets
-                </span>
-              )}
-            </div>
-          ) : subtitle ? (
-            <p className="text-neutral-400 text-[10px] font-medium font-['Inter'] mt-auto">
-              {subtitle}
-            </p>
-          ) : null}
+        {/* Icon */}
+        <div className="flex-shrink-0 mt-1">
+          <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
+            {getIcon()}
+          </div>
         </div>
 
-        <button className="self-start p-1 hover:bg-gray-100 rounded">
-          <div className="flex flex-col gap-1">
-            <div className="w-0.5 h-0.5 bg-stone-500 rounded-full" />
-            <div className="w-0.5 h-0.5 bg-stone-500 rounded-full" />
-            <div className="w-0.5 h-0.5 bg-stone-500 rounded-full" />
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1">
+              <p className="text-sm text-gray-900 font-medium line-clamp-2 mb-1">
+                {message}
+              </p>
+
+              <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                <span className="font-medium">{user}</span>
+                <span>•</span>
+                <span>{getTypeLabel()}</span>
+                <span>•</span>
+                <span className="truncate">{project}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <Clock size={12} />
+                <span>{time}</span>
+              </div>
+            </div>
+
+            {/* Action Menu */}
+            <button className="flex-shrink-0 p-1 hover:bg-gray-100 rounded transition-colors">
+              <MoreHorizontal size={14} className="text-gray-400" />
+            </button>
           </div>
-        </button>
+        </div>
       </div>
     </div>
   )

@@ -10,43 +10,45 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-stone-50 flex flex-col">
       {/* TopNav */}
       <TopNav />
 
-      {/* Mobile Sidebar Toggle */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-8 h-8 bg-white rounded-lg shadow-lg flex items-center justify-center"
-      >
-        {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
-      </button>
-
-      <div className="flex pt-11">
-        {/* Mobile Overlay */}
-        {sidebarOpen && (
-          <div
-            className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-
+      <div className="flex flex-1 min-h-0">
         {/* Sidebar */}
         <aside
           className={`
-          fixed lg:static inset-y-0 left-0 z-50 w-80 lg:w-96 bg-white border-r border-gray-200 
-          h-[calc(100vh-44px)] lg:h-[calc(100vh-44px)] overflow-y-auto
-          transform transition-transform duration-300 ease-in-out pt-11 lg:pt-0
-          ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-          }
-        `}
+            hidden lg:flex flex-col w-[300px] bg-white border-r border-zinc-200 min-h-0 h-[calc(100vh-44px)] sticky top-11 z-20
+          `}
         >
           <ClientSidebar />
         </aside>
 
+        {/* Sidebar Mobile */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+        <aside
+          className={`
+            fixed top-11 left-0 z-50 w-[260px] h-[calc(100vh-44px)] bg-white border-r border-zinc-200 transition-transform duration-300 lg:hidden
+            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+        >
+          <ClientSidebar />
+        </aside>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="lg:hidden fixed top-4 left-4 z-50 w-8 h-8 bg-white rounded-lg shadow-lg flex items-center justify-center border border-gray-200"
+          aria-label="Abrir menu"
+        >
+          {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
+        </button>
+
         {/* Main Content */}
-        <main className="flex-1 min-h-[calc(100vh-44px)] overflow-auto">
+        <main className="flex-1 min-h-0 overflow-y-auto w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pt-8 pb-16">
           {children}
         </main>
       </div>

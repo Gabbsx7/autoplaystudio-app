@@ -43,7 +43,7 @@ function AssetCard({ asset, onClick }: { asset: Asset; onClick?: () => void }) {
 
   return (
     <div
-      className="relative bg-white rounded shadow-[1px_2px_4px_0px_rgba(0,0,0,0.10)] overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group"
+      className="relative rounded shadow-[1px_2px_4px_0px_rgba(0,0,0,0.10)] overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group"
       onClick={onClick}
       style={{
         width: asset.width || 256,

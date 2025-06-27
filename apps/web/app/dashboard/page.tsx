@@ -3,13 +3,30 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePermissions } from '@/components/role-based/permissions'
+import { useAuth } from '@/components/auth/auth-provider'
 
 export default function DashboardPage() {
+  const { user, loading: authLoading } = useAuth()
   const { role, loading } = usePermissions()
   const router = useRouter()
 
   useEffect(() => {
-    if (loading) return
+    console.log(
+      'user:',
+      user,
+      'authLoading:',
+      authLoading,
+      'role:',
+      role,
+      'loading:',
+      loading
+    )
+    if (authLoading || loading) return
+
+    if (!user) {
+      router.push('/auth/login')
+      return
+    }
 
     // Redirecionar baseado na role
     switch (role) {
@@ -27,9 +44,9 @@ export default function DashboardPage() {
       default:
         router.push('/auth/login')
     }
-  }, [role, loading, router])
+  }, [user, authLoading, role, loading, router])
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -38,6 +55,14 @@ export default function DashboardPage() {
         </div>
       </div>
     )
+  }
+
+  // Fallback: se não houver user ou role, redireciona para login
+  if (!user || !role) {
+    if (typeof window !== 'undefined') {
+      router.push('/auth/login')
+    }
+    return null
   }
 
   return null
