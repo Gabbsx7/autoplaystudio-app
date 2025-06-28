@@ -38,7 +38,14 @@ ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 # Build the application
 WORKDIR /app/apps/web
+RUN echo "Starting build process..."
+RUN echo "Environment variables:"
+RUN echo "NEXT_PUBLIC_SUPABASE_URL: $NEXT_PUBLIC_SUPABASE_URL"
+RUN echo "NEXT_PUBLIC_SUPABASE_ANON_KEY: $NEXT_PUBLIC_SUPABASE_ANON_KEY"
+RUN ls -la
+RUN echo "Building with pnpm..."
 RUN pnpm build
+RUN echo "Build completed successfully!"
 
 # Production image, copy all the files and run next
 FROM base AS runner
