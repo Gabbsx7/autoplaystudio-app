@@ -34,13 +34,19 @@ RUN pnpm build
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Copy standalone output to app root for easier access
+RUN cp -r /app/apps/web/.next/standalone/* /app/
+RUN cp -r /app/apps/web/.next/static /app/.next/
+RUN cp -r /app/apps/web/public /app/
+
 # Set ownership
 RUN chown -R nextjs:nodejs /app
 
 USER nextjs
 
+WORKDIR /app
+
 EXPOSE 3000
 
-# Start the application with explicit working directory
-WORKDIR /app/apps/web
-CMD ["node_modules/.bin/next", "start"] 
+# Start using standalone server
+CMD ["node", "server.js"] 
