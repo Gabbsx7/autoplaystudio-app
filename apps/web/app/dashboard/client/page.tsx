@@ -241,7 +241,7 @@ export default function ClientDashboardPage() {
             project={{
               id: featuredProject.id,
               title: featuredProject.name,
-              description: featuredProject.description,
+              description: featuredProject.description || '',
               status: featuredProject.status,
               progress: featuredProject.progress || 0,
               dueDate: featuredProject.due_date,
