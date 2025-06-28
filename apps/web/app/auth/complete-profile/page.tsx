@@ -84,7 +84,7 @@ export default function CompleteProfilePage() {
 
       if (clientUserError) throw clientUserError
 
-      // Sucesso - redirecionar para dashboard
+      // Sucesso - redirecionar para dashboard (sistema determinará studio vs client)
       router.push('/dashboard')
     } catch (error: any) {
       setError(error.message)

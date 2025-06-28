@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RoleGuard } from '@/components/role-based/role-guard'
 import AssetNavigator from '@/components/studioDashboard/AssetNavigator'
 import FolderFlow from '@/components/studioDashboard/FolderFlow'
@@ -11,8 +11,92 @@ import MemberCard from '@/components/studioDashboard/MemberCard'
 import TeamCard from '@/components/studioDashboard/TeamCard'
 import ClientCard from '@/components/studioDashboard/ClientCard'
 import IntegrationsPanel from '@/components/studioDashboard/IntegrationsPanel'
+import { supabase } from '@/lib/supabase/client'
+
+interface Client {
+  id: string
+  name: string
+  description?: string
+  projectsCount: number
+  membersCount: number
+  lastActive?: string
+  status: 'active' | 'inactive' | 'pending'
+}
 
 export default function StudioDashboard() {
+  const [clients, setClients] = useState<Client[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch real clients data
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const { data: clientsData, error } = await supabase
+          .from('clients')
+          .select(
+            `
+            id,
+            name,
+            description,
+            created_at,
+            is_active
+          `
+          )
+          .eq('is_active', true)
+          .order('name')
+
+        if (error) throw error
+
+        // Get projects count for each client
+        const clientsWithStats = await Promise.all(
+          clientsData.map(async (client) => {
+            const { count: projectsCount } = await supabase
+              .from('projects')
+              .select('*', { count: 'exact', head: true })
+              .eq('client_id', client.id)
+
+            const { count: membersCount } = await supabase
+              .from('client_users')
+              .select('*', { count: 'exact', head: true })
+              .eq('client_id', client.id)
+
+            return {
+              id: client.id,
+              name: client.name,
+              description: client.description || 'No description provided',
+              projectsCount: projectsCount || 0,
+              membersCount: membersCount || 0,
+              lastActive: new Date(client.created_at).toLocaleDateString(),
+              status: client.is_active
+                ? ('active' as const)
+                : ('inactive' as const),
+            }
+          })
+        )
+
+        setClients(clientsWithStats)
+      } catch (error) {
+        console.error('Error fetching clients:', error)
+        // Fallback to mock data in case of error
+        setClients([
+          {
+            id: '550e8400-e29b-41d4-a716-446655440001',
+            name: 'Test Client',
+            description: 'Default test client',
+            projectsCount: 3,
+            membersCount: 1,
+            lastActive: '1 day ago',
+            status: 'active',
+          },
+        ])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchClients()
+  }, [])
+
   // Mock data baseado no Figma
   const mockProjects = [
     {
@@ -115,42 +199,13 @@ export default function StudioDashboard() {
     },
   ]
 
-  const mockClients = [
-    {
-      id: '1',
-      name: 'Footlocker',
-      description: 'Global athletic footwear retailer',
-      projectsCount: 3,
-      membersCount: 8,
-      lastActive: '2 hours ago',
-      status: 'active' as const,
-    },
-    {
-      id: '2',
-      name: 'Nike',
-      description: 'Leading sports brand',
-      projectsCount: 2,
-      membersCount: 5,
-      lastActive: '1 day ago',
-      status: 'active' as const,
-    },
-    {
-      id: '3',
-      name: 'Adidas',
-      description: 'German sportswear manufacturer',
-      projectsCount: 1,
-      membersCount: 3,
-      lastActive: '3 days ago',
-      status: 'pending' as const,
-    },
-  ]
-
   const handleProjectClick = (projectId: string) => {
     console.log('Navigate to project:', projectId)
   }
 
   const handleClientClick = (clientId: string) => {
-    console.log('Navigate to client dashboard:', clientId)
+    // Studio members podem acessar o dashboard do cliente
+    window.location.href = `/dashboard/client?clientId=${clientId}`
   }
 
   const handleNewProject = () => {
@@ -260,15 +315,21 @@ export default function StudioDashboard() {
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
                   Clients
                 </h2>
-                <div className="space-y-4">
-                  {mockClients.map((client) => (
-                    <ClientCard
-                      key={client.id}
-                      {...client}
-                      onClick={() => handleClientClick(client.id)}
-                    />
-                  ))}
-                </div>
+                {loading ? (
+                  <div className="flex items-center justify-center p-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {clients.map((client) => (
+                      <ClientCard
+                        key={client.id}
+                        {...client}
+                        onClick={() => handleClientClick(client.id)}
+                      />
+                    ))}
+                  </div>
+                )}
               </section>
             </div>
 

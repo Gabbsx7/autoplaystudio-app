@@ -24,7 +24,8 @@ export default function LoginPage() {
     if (error) {
       setError(error.message)
     } else {
-      router.push('/dashboard') // Altere futuramente com lógica de role
+      // Redirect to dashboard - the system will determine studio vs client automatically
+      router.push('/dashboard')
     }
     setLoading(false)
   }
@@ -32,98 +33,113 @@ export default function LoginPage() {
   return (
     <div className="flex h-screen">
       {/* Lado esquerdo (formulário) */}
-      <div className="w-1/2 flex flex-col justify-center items-center p-10 bg-white">
-        {/* Logo */}
-        <div className="mb-10">
-          <div className="w-12 h-12 bg-black rounded flex items-center justify-center">
-            <span className="text-white font-bold text-xl">P</span>
-          </div>
-        </div>
-
-        <div className="w-full max-w-sm">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900">
-            Welcome back
-          </h1>
-          <p className="text-gray-500 mb-8">
-            Please enter your details to sign in
-          </p>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email address
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition disabled:opacity-50 font-medium"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
-
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 text-sm">{error}</p>
-              </div>
-            )}
-          </form>
-
-          <div className="mt-6 text-center">
-            <a
-              href="#"
-              className="text-sm text-gray-600 hover:text-gray-900 underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <a
-                href="/auth/signup"
-                className="text-black font-medium hover:underline"
-              >
-                Sign up
-              </a>
+      <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div className="mx-auto w-full max-w-sm lg:w-96">
+          <div>
+            <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+              Sign in to your account
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-gray-500">
+              Enter your credentials to access AutoPlay Studio
             </p>
+          </div>
+
+          <div className="mt-10">
+            <form className="space-y-6" onSubmit={handleLogin}>
+              {error && (
+                <div className="rounded-md bg-red-50 p-4">
+                  <div className="text-sm text-red-800">{error}</div>
+                </div>
+              )}
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+                >
+                  {loading ? 'Signing in...' : 'Sign in'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
 
-      {/* Lado direito (imagem) */}
-      <div
-        className="w-1/2 bg-cover bg-center hidden md:block relative"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80')",
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+      {/* Lado direito (imagem/branding) */}
+      <div className="relative hidden w-0 flex-1 lg:block">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-700">
+          <div className="flex h-full items-center justify-center p-12">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-white mb-4">
+                AutoPlay Studio
+              </h1>
+              <p className="text-xl text-indigo-100 mb-8">
+                Professional design collaboration platform
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-indigo-100">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">50+</div>
+                  <div className="text-sm">Active Projects</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">100+</div>
+                  <div className="text-sm">Team Members</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">500+</div>
+                  <div className="text-sm">Assets Managed</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">99%</div>
+                  <div className="text-sm">Client Satisfaction</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

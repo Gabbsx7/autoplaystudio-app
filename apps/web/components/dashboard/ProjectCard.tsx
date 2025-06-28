@@ -20,7 +20,14 @@ interface ProjectCardProps {
   id: string
   title: string
   description: string
-  status: 'in_progress' | 'draft' | 'proposal'
+  status:
+    | 'active'
+    | 'in_progress'
+    | 'completed'
+    | 'paused'
+    | 'cancelled'
+    | 'draft'
+    | 'proposal'
   teamMembers: TeamMember[]
   milestones?: Milestone[]
   progress?: number
@@ -31,11 +38,35 @@ interface ProjectCardProps {
 }
 
 const statusConfig = {
+  active: {
+    bgColor: 'bg-amber-300',
+    textColor: 'text-yellow-100',
+    label: 'IN PROGRESS',
+    dotColor: 'bg-lime-600',
+  },
   in_progress: {
     bgColor: 'bg-amber-300',
     textColor: 'text-yellow-100',
     label: 'IN PROGRESS',
     dotColor: 'bg-lime-600',
+  },
+  completed: {
+    bgColor: 'bg-green-400',
+    textColor: 'text-white',
+    label: 'COMPLETED',
+    dotColor: 'bg-green-600',
+  },
+  paused: {
+    bgColor: 'bg-gray-400',
+    textColor: 'text-white',
+    label: 'PAUSED',
+    dotColor: 'bg-gray-600',
+  },
+  cancelled: {
+    bgColor: 'bg-red-400',
+    textColor: 'text-white',
+    label: 'CANCELLED',
+    dotColor: 'bg-red-600',
   },
   draft: {
     bgColor: 'bg-blue-400',
@@ -70,7 +101,7 @@ export function ProjectCard({
   className,
   viewMode = 'grid',
 }: ProjectCardProps) {
-  const config = statusConfig[status]
+  const config = statusConfig[status] || statusConfig.active // Fallback para status ativo
 
   // Grid view (Figma-like)
   return (

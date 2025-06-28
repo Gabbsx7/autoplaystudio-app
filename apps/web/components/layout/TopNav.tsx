@@ -18,6 +18,7 @@ import {
   TasksButton,
 } from '@/components/common'
 import InviteMemberModal from './InviteMemberModal'
+import ChatDrawerAdvanced from './ChatDrawerAdvanced'
 
 // Paleta de cores possíveis para avatares
 const AVATAR_COLORS = [
@@ -129,6 +130,7 @@ export default function TopNav() {
         )}
         <TasksButton />
         <NotificationsButton />
+        <ChatDrawerAdvanced />
         {/* User Avatar */}
         <div className="relative">
           <button

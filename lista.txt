@@ -1,0 +1,783 @@
+;
+; Archive created at 2025-06-27 14:29:32 -03
+;     dbname: postgres
+;     TOC Entries: 775
+;     Compression: gzip
+;     Dump Version: 1.15-0
+;     Format: CUSTOM
+;     Integer: 4 bytes
+;     Offset: 8 bytes
+;     Dumped from database version: 15.8
+;     Dumped by pg_dump version: 16.9 (Ubuntu 16.9-0ubuntu0.24.04.1)
+;
+;
+; Selected TOC Entries:
+;
+17; 2615 16488 SCHEMA - auth supabase_admin
+4700; 0 0 ACL - SCHEMA auth supabase_admin
+15; 2615 16388 SCHEMA - extensions postgres
+4701; 0 0 ACL - SCHEMA extensions postgres
+26; 2615 16618 SCHEMA - graphql supabase_admin
+25; 2615 16607 SCHEMA - graphql_public supabase_admin
+2; 3079 96623 EXTENSION - pg_net 
+4702; 0 0 COMMENT - EXTENSION pg_net 
+4703; 0 0 ACL - SCHEMA net supabase_admin
+13; 2615 16386 SCHEMA - pgbouncer pgbouncer
+20; 2615 16645 SCHEMA - pgsodium supabase_admin
+7; 3079 16646 EXTENSION - pgsodium 
+4704; 0 0 COMMENT - EXTENSION pgsodium 
+4705; 0 0 ACL - SCHEMA public pg_database_owner
+19; 2615 16599 SCHEMA - realtime supabase_admin
+4706; 0 0 ACL - SCHEMA realtime supabase_admin
+16; 2615 16536 SCHEMA - storage supabase_admin
+4707; 0 0 ACL - SCHEMA storage supabase_admin
+99; 2615 96665 SCHEMA - supabase_functions supabase_admin
+4708; 0 0 ACL - SCHEMA supabase_functions supabase_admin
+23; 2615 16949 SCHEMA - vault supabase_admin
+9; 3079 16982 EXTENSION - pg_graphql 
+4709; 0 0 COMMENT - EXTENSION pg_graphql 
+6; 3079 16389 EXTENSION - pg_stat_statements 
+4710; 0 0 COMMENT - EXTENSION pg_stat_statements 
+4; 3079 16434 EXTENSION - pgcrypto 
+4711; 0 0 COMMENT - EXTENSION pgcrypto 
+3; 3079 16471 EXTENSION - pgjwt 
+4712; 0 0 COMMENT - EXTENSION pgjwt 
+8; 3079 16950 EXTENSION - supabase_vault 
+4713; 0 0 COMMENT - EXTENSION supabase_vault 
+5; 3079 16423 EXTENSION - uuid-ossp 
+4714; 0 0 COMMENT - EXTENSION "uuid-ossp" 
+1511; 1247 28786 TYPE auth aal_level supabase_auth_admin
+1535; 1247 28927 TYPE auth code_challenge_method supabase_auth_admin
+1508; 1247 28780 TYPE auth factor_status supabase_auth_admin
+1505; 1247 28774 TYPE auth factor_type supabase_auth_admin
+1541; 1247 28969 TYPE auth one_time_token_type supabase_auth_admin
+1379; 1247 42139 TYPE public milestone_status postgres
+1448; 1247 40810 TYPE public priority_level postgres
+1445; 1247 40794 TYPE public project_status postgres
+1451; 1247 40820 TYPE public task_status postgres
+1568; 1247 29136 TYPE realtime action supabase_admin
+1556; 1247 29097 TYPE realtime equality_op supabase_admin
+1559; 1247 29111 TYPE realtime user_defined_filter supabase_admin
+1574; 1247 29178 TYPE realtime wal_column supabase_admin
+1571; 1247 29149 TYPE realtime wal_rls supabase_admin
+431; 1255 16534 FUNCTION auth email() supabase_auth_admin
+4715; 0 0 COMMENT auth FUNCTION email() supabase_auth_admin
+4716; 0 0 ACL auth FUNCTION email() supabase_auth_admin
+675; 1255 28756 FUNCTION auth jwt() supabase_auth_admin
+4717; 0 0 ACL auth FUNCTION jwt() supabase_auth_admin
+430; 1255 16533 FUNCTION auth role() supabase_auth_admin
+4718; 0 0 COMMENT auth FUNCTION role() supabase_auth_admin
+4719; 0 0 ACL auth FUNCTION role() supabase_auth_admin
+429; 1255 16532 FUNCTION auth uid() supabase_auth_admin
+4720; 0 0 COMMENT auth FUNCTION uid() supabase_auth_admin
+4721; 0 0 ACL auth FUNCTION uid() supabase_auth_admin
+4722; 0 0 ACL extensions FUNCTION algorithm_sign(signables text, secret text, algorithm text) postgres
+4723; 0 0 ACL extensions FUNCTION armor(bytea) postgres
+4724; 0 0 ACL extensions FUNCTION armor(bytea, text[], text[]) postgres
+4725; 0 0 ACL extensions FUNCTION crypt(text, text) postgres
+4726; 0 0 ACL extensions FUNCTION dearmor(text) postgres
+4727; 0 0 ACL extensions FUNCTION decrypt(bytea, bytea, text) postgres
+4728; 0 0 ACL extensions FUNCTION decrypt_iv(bytea, bytea, bytea, text) postgres
+4729; 0 0 ACL extensions FUNCTION digest(bytea, text) postgres
+4730; 0 0 ACL extensions FUNCTION digest(text, text) postgres
+4731; 0 0 ACL extensions FUNCTION encrypt(bytea, bytea, text) postgres
+4732; 0 0 ACL extensions FUNCTION encrypt_iv(bytea, bytea, bytea, text) postgres
+4733; 0 0 ACL extensions FUNCTION gen_random_bytes(integer) postgres
+4734; 0 0 ACL extensions FUNCTION gen_random_uuid() postgres
+4735; 0 0 ACL extensions FUNCTION gen_salt(text) postgres
+4736; 0 0 ACL extensions FUNCTION gen_salt(text, integer) postgres
+666; 1255 16591 FUNCTION extensions grant_pg_cron_access() postgres
+4737; 0 0 COMMENT extensions FUNCTION grant_pg_cron_access() postgres
+4738; 0 0 ACL extensions FUNCTION grant_pg_cron_access() postgres
+474; 1255 16612 FUNCTION extensions grant_pg_graphql_access() supabase_admin
+4739; 0 0 COMMENT extensions FUNCTION grant_pg_graphql_access() supabase_admin
+4740; 0 0 ACL extensions FUNCTION grant_pg_graphql_access() supabase_admin
+667; 1255 16593 FUNCTION extensions grant_pg_net_access() postgres
+4741; 0 0 COMMENT extensions FUNCTION grant_pg_net_access() postgres
+4742; 0 0 ACL extensions FUNCTION grant_pg_net_access() postgres
+4743; 0 0 ACL extensions FUNCTION hmac(bytea, bytea, text) postgres
+4744; 0 0 ACL extensions FUNCTION hmac(text, text, text) postgres
+4745; 0 0 ACL extensions FUNCTION pg_stat_statements(showtext boolean, OUT userid oid, OUT dbid oid, OUT toplevel boolean, OUT queryid bigint, OUT query text, OUT plans bigint, OUT total_plan_time double precision, OUT min_plan_time double precision, OUT max_plan_time double precision, OUT mean_plan_time double precision, OUT stddev_plan_time double precision, OUT calls bigint, OUT total_exec_time double precision, OUT min_exec_time double precision, OUT max_exec_time double precision, OUT mean_exec_time double precision, OUT stddev_exec_time double precision, OUT rows bigint, OUT shared_blks_hit bigint, OUT shared_blks_read bigint, OUT shared_blks_dirtied bigint, OUT shared_blks_written bigint, OUT local_blks_hit bigint, OUT local_blks_read bigint, OUT local_blks_dirtied bigint, OUT local_blks_written bigint, OUT temp_blks_read bigint, OUT temp_blks_written bigint, OUT blk_read_time double precision, OUT blk_write_time double precision, OUT temp_blk_read_time double precision, OUT temp_blk_write_time double precision, OUT wal_records bigint, OUT wal_fpi bigint, OUT wal_bytes numeric, OUT jit_functions bigint, OUT jit_generation_time double precision, OUT jit_inlining_count bigint, OUT jit_inlining_time double precision, OUT jit_optimization_count bigint, OUT jit_optimization_time double precision, OUT jit_emission_count bigint, OUT jit_emission_time double precision) postgres
+4746; 0 0 ACL extensions FUNCTION pg_stat_statements_info(OUT dealloc bigint, OUT stats_reset timestamp with time zone) postgres
+4747; 0 0 ACL extensions FUNCTION pg_stat_statements_reset(userid oid, dbid oid, queryid bigint) postgres
+4748; 0 0 ACL extensions FUNCTION pgp_armor_headers(text, OUT key text, OUT value text) postgres
+4749; 0 0 ACL extensions FUNCTION pgp_key_id(bytea) postgres
+4750; 0 0 ACL extensions FUNCTION pgp_pub_decrypt(bytea, bytea) postgres
+4751; 0 0 ACL extensions FUNCTION pgp_pub_decrypt(bytea, bytea, text) postgres
+4752; 0 0 ACL extensions FUNCTION pgp_pub_decrypt(bytea, bytea, text, text) postgres
+4753; 0 0 ACL extensions FUNCTION pgp_pub_decrypt_bytea(bytea, bytea) postgres
+4754; 0 0 ACL extensions FUNCTION pgp_pub_decrypt_bytea(bytea, bytea, text) postgres
+4755; 0 0 ACL extensions FUNCTION pgp_pub_decrypt_bytea(bytea, bytea, text, text) postgres
+4756; 0 0 ACL extensions FUNCTION pgp_pub_encrypt(text, bytea) postgres
+4757; 0 0 ACL extensions FUNCTION pgp_pub_encrypt(text, bytea, text) postgres
+4758; 0 0 ACL extensions FUNCTION pgp_pub_encrypt_bytea(bytea, bytea) postgres
+4759; 0 0 ACL extensions FUNCTION pgp_pub_encrypt_bytea(bytea, bytea, text) postgres
+4760; 0 0 ACL extensions FUNCTION pgp_sym_decrypt(bytea, text) postgres
+4761; 0 0 ACL extensions FUNCTION pgp_sym_decrypt(bytea, text, text) postgres
+4762; 0 0 ACL extensions FUNCTION pgp_sym_decrypt_bytea(bytea, text) postgres
+4763; 0 0 ACL extensions FUNCTION pgp_sym_decrypt_bytea(bytea, text, text) postgres
+4764; 0 0 ACL extensions FUNCTION pgp_sym_encrypt(text, text) postgres
+4765; 0 0 ACL extensions FUNCTION pgp_sym_encrypt(text, text, text) postgres
+4766; 0 0 ACL extensions FUNCTION pgp_sym_encrypt_bytea(bytea, text) postgres
+4767; 0 0 ACL extensions FUNCTION pgp_sym_encrypt_bytea(bytea, text, text) postgres
+657; 1255 16603 FUNCTION extensions pgrst_ddl_watch() supabase_admin
+4768; 0 0 ACL extensions FUNCTION pgrst_ddl_watch() supabase_admin
+469; 1255 16604 FUNCTION extensions pgrst_drop_watch() supabase_admin
+4769; 0 0 ACL extensions FUNCTION pgrst_drop_watch() supabase_admin
+659; 1255 16614 FUNCTION extensions set_graphql_placeholder() supabase_admin
+4770; 0 0 COMMENT extensions FUNCTION set_graphql_placeholder() supabase_admin
+4771; 0 0 ACL extensions FUNCTION set_graphql_placeholder() supabase_admin
+4772; 0 0 ACL extensions FUNCTION sign(payload json, secret text, algorithm text) postgres
+4773; 0 0 ACL extensions FUNCTION try_cast_double(inp text) postgres
+4774; 0 0 ACL extensions FUNCTION url_decode(data text) postgres
+4775; 0 0 ACL extensions FUNCTION url_encode(data bytea) postgres
+4776; 0 0 ACL extensions FUNCTION uuid_generate_v1() postgres
+4777; 0 0 ACL extensions FUNCTION uuid_generate_v1mc() postgres
+4778; 0 0 ACL extensions FUNCTION uuid_generate_v3(namespace uuid, name text) postgres
+4779; 0 0 ACL extensions FUNCTION uuid_generate_v4() postgres
+4780; 0 0 ACL extensions FUNCTION uuid_generate_v5(namespace uuid, name text) postgres
+4781; 0 0 ACL extensions FUNCTION uuid_nil() postgres
+4782; 0 0 ACL extensions FUNCTION uuid_ns_dns() postgres
+4783; 0 0 ACL extensions FUNCTION uuid_ns_oid() postgres
+4784; 0 0 ACL extensions FUNCTION uuid_ns_url() postgres
+4785; 0 0 ACL extensions FUNCTION uuid_ns_x500() postgres
+4786; 0 0 ACL extensions FUNCTION verify(token text, secret text, algorithm text) postgres
+4787; 0 0 ACL graphql_public FUNCTION graphql("operationName" text, query text, variables jsonb, extensions jsonb) supabase_admin
+409; 1255 16387 FUNCTION pgbouncer get_auth(text) supabase_admin
+4788; 0 0 ACL pgbouncer FUNCTION get_auth(p_usename text) supabase_admin
+4789; 0 0 ACL pgsodium FUNCTION crypto_aead_det_decrypt(message bytea, additional bytea, key_uuid uuid, nonce bytea) pgsodium_keymaker
+4790; 0 0 ACL pgsodium FUNCTION crypto_aead_det_encrypt(message bytea, additional bytea, key_uuid uuid, nonce bytea) pgsodium_keymaker
+4791; 0 0 ACL pgsodium FUNCTION crypto_aead_det_keygen() supabase_admin
+464; 1255 43363 FUNCTION public add_comment_with_validation(uuid, text, uuid) postgres
+4792; 0 0 ACL public FUNCTION add_comment_with_validation(p_project_id uuid, p_content text, p_parent_id uuid) postgres
+459; 1255 43354 FUNCTION public add_project_feedback(uuid, text) postgres
+4793; 0 0 ACL public FUNCTION add_project_feedback(p_project_id uuid, p_content text) postgres
+427; 1255 54571 FUNCTION public assign_user_to_client(uuid, uuid, text, boolean) postgres
+4794; 0 0 ACL public FUNCTION assign_user_to_client(p_client_id uuid, p_user_id uuid, p_role text, p_is_primary boolean) postgres
+449; 1255 56919 FUNCTION public can_delete_project(uuid) postgres
+4795; 0 0 ACL public FUNCTION can_delete_project(project_id uuid) postgres
+432; 1255 43339 FUNCTION public check_project_access(uuid, uuid) postgres
+4796; 0 0 ACL public FUNCTION check_project_access(user_id uuid, project_id uuid) postgres
+475; 1255 40721 FUNCTION public check_user_role(uuid, text) postgres
+4797; 0 0 ACL public FUNCTION check_user_role(user_id uuid, role_name text) postgres
+444; 1255 43347 FUNCTION public create_project_comment(uuid, text, uuid) postgres
+4798; 0 0 ACL public FUNCTION create_project_comment(p_project_id uuid, p_content text, p_parent_id uuid) postgres
+447; 1255 43348 FUNCTION public create_project_feedback(uuid, text, text) postgres
+4799; 0 0 ACL public FUNCTION create_project_feedback(p_project_id uuid, p_content text, p_feedback_type text) postgres
+465; 1255 43364 FUNCTION public edit_comment(uuid, text) postgres
+4800; 0 0 ACL public FUNCTION edit_comment(p_comment_id uuid, p_content text) postgres
+437; 1255 54616 FUNCTION public get_all_clients() postgres
+4801; 0 0 ACL public FUNCTION get_all_clients() postgres
+438; 1255 54617 FUNCTION public get_all_users() postgres
+4802; 0 0 ACL public FUNCTION get_all_users() postgres
+421; 1255 40940 FUNCTION public get_client_dashboard_data(uuid) postgres
+4803; 0 0 ACL public FUNCTION get_client_dashboard_data(client_id uuid) postgres
+428; 1255 54572 FUNCTION public get_client_user_details(uuid) postgres
+4804; 0 0 ACL public FUNCTION get_client_user_details(p_client_id uuid) postgres
+406; 1255 54569 FUNCTION public get_client_users(uuid) postgres
+4805; 0 0 ACL public FUNCTION get_client_users(p_client_id uuid) postgres
+698; 1255 29291 FUNCTION public get_complete_schema() postgres
+4806; 0 0 ACL public FUNCTION get_complete_schema() postgres
+672; 1255 42188 FUNCTION public get_formatted_project_milestones(uuid) postgres
+4807; 0 0 ACL public FUNCTION get_formatted_project_milestones(p_project_id uuid) postgres
+669; 1255 42061 FUNCTION public get_milestone_accordion_data(uuid) postgres
+4808; 0 0 ACL public FUNCTION get_milestone_accordion_data(p_project_id uuid) postgres
+436; 1255 45608 FUNCTION public get_milestone_list(uuid) postgres
+4809; 0 0 ACL public FUNCTION get_milestone_list(p_project_id uuid) postgres
+668; 1255 42058 FUNCTION public get_milestone_overview() postgres
+4810; 0 0 ACL public FUNCTION get_milestone_overview() postgres
+525; 1255 58823 FUNCTION public get_milestone_tasks(uuid) postgres
+4811; 0 0 ACL public FUNCTION get_milestone_tasks(p_milestone_id uuid) postgres
+463; 1255 43362 FUNCTION public get_paginated_comments(uuid, integer, integer) postgres
+4812; 0 0 ACL public FUNCTION get_paginated_comments(p_project_id uuid, p_limit integer, p_offset integer) postgres
+422; 1255 40941 FUNCTION public get_project_analytics(uuid) postgres
+4813; 0 0 ACL public FUNCTION get_project_analytics(project_id uuid) postgres
+426; 1255 43336 FUNCTION public get_project_comments(uuid, integer, integer) postgres
+4814; 0 0 ACL public FUNCTION get_project_comments(p_project_id uuid, p_limit integer, p_offset integer) postgres
+448; 1255 43349 FUNCTION public get_project_feedback(uuid, integer, integer) postgres
+4815; 0 0 ACL public FUNCTION get_project_feedback(p_project_id uuid, p_limit integer, p_offset integer) postgres
+407; 1255 80439 FUNCTION public get_project_id(text) postgres
+4816; 0 0 ACL public FUNCTION get_project_id(project_name text) postgres
+674; 1255 42189 FUNCTION public get_project_milestone_details(uuid) postgres
+4817; 0 0 ACL public FUNCTION get_project_milestone_details(p_project_id uuid) postgres
+671; 1255 42187 FUNCTION public get_project_milestones(uuid) postgres
+4818; 0 0 ACL public FUNCTION get_project_milestones(p_project_id uuid) postgres
+408; 1255 40939 FUNCTION public get_project_overview(uuid) postgres
+4819; 0 0 ACL public FUNCTION get_project_overview(p_project_id uuid) postgres
+470; 1255 43376 FUNCTION public get_resolved_comments(uuid, integer, integer) postgres
+4820; 0 0 ACL public FUNCTION get_resolved_comments(p_project_id uuid, p_limit integer, p_offset integer) postgres
+471; 1255 43377 FUNCTION public get_unresolved_comments(uuid, integer, integer) postgres
+4821; 0 0 ACL public FUNCTION get_unresolved_comments(p_project_id uuid, p_limit integer, p_offset integer) postgres
+435; 1255 43342 FUNCTION public get_user_active_projects(uuid) postgres
+4822; 0 0 ACL public FUNCTION get_user_active_projects(p_user_id uuid) postgres
+460; 1255 43355 FUNCTION public get_user_project_feedback(uuid) postgres
+4823; 0 0 ACL public FUNCTION get_user_project_feedback(p_project_id uuid) postgres
+433; 1255 43340 FUNCTION public get_user_project_role(uuid, uuid) postgres
+4824; 0 0 ACL public FUNCTION get_user_project_role(user_id uuid, project_id uuid) postgres
+373; 1259 40600 TABLE public projects postgres
+4825; 0 0 ACL public TABLE projects postgres
+404; 1255 40722 FUNCTION public get_user_projects(uuid) postgres
+4826; 0 0 ACL public FUNCTION get_user_projects(p_user_id uuid) postgres
+434; 1255 43341 FUNCTION public is_project_owner(uuid, uuid) postgres
+4827; 0 0 ACL public FUNCTION is_project_owner(user_id uuid, project_id uuid) postgres
+371; 1259 29411 TABLE public media postgres
+4828; 0 0 ACL public TABLE media postgres
+673; 1255 136840 FUNCTION public search_media_items(text, integer, integer) postgres
+4829; 0 0 ACL public FUNCTION search_media_items(q text, page integer, per_page integer) postgres
+461; 1255 140324 FUNCTION public search_media_items_all(text) postgres
+4830; 0 0 ACL public FUNCTION search_media_items_all(q text) postgres
+472; 1255 43375 FUNCTION public toggle_comment_resolution(uuid, boolean) postgres
+4831; 0 0 ACL public FUNCTION toggle_comment_resolution(p_comment_id uuid, p_resolution_status boolean) postgres
+405; 1255 40723 FUNCTION public update_updated_at_column() postgres
+4832; 0 0 ACL public FUNCTION update_updated_at_column() postgres
+670; 1255 42145 FUNCTION public validate_milestone_arrays() postgres
+4833; 0 0 ACL public FUNCTION validate_milestone_arrays() postgres
+691; 1255 29171 FUNCTION realtime apply_rls(jsonb, integer) supabase_admin
+4834; 0 0 ACL realtime FUNCTION apply_rls(wal jsonb, max_record_bytes integer) supabase_admin
+697; 1255 29253 FUNCTION realtime broadcast_changes(text, text, text, text, text, record, record, text) supabase_admin
+4835; 0 0 ACL realtime FUNCTION broadcast_changes(topic_name text, event_name text, operation text, table_name text, table_schema text, new record, old record, level text) supabase_admin
+690; 1255 29183 FUNCTION realtime build_prepared_statement_sql(text, regclass, realtime.wal_column[]) supabase_admin
+4836; 0 0 ACL realtime FUNCTION build_prepared_statement_sql(prepared_statement_name text, entity regclass, columns realtime.wal_column[]) supabase_admin
+687; 1255 29133 FUNCTION realtime cast(text, regtype) supabase_admin
+4837; 0 0 ACL realtime FUNCTION "cast"(val text, type_ regtype) supabase_admin
+688; 1255 29128 FUNCTION realtime check_equality_op(realtime.equality_op, regtype, text, text) supabase_admin
+4838; 0 0 ACL realtime FUNCTION check_equality_op(op realtime.equality_op, type_ regtype, val_1 text, val_2 text) supabase_admin
+693; 1255 29179 FUNCTION realtime is_visible_through_filters(realtime.wal_column[], realtime.user_defined_filter[]) supabase_admin
+4839; 0 0 ACL realtime FUNCTION is_visible_through_filters(columns realtime.wal_column[], filters realtime.user_defined_filter[]) supabase_admin
+694; 1255 29190 FUNCTION realtime list_changes(name, name, integer, integer) supabase_admin
+4840; 0 0 ACL realtime FUNCTION list_changes(publication name, slot_name name, max_changes integer, max_record_bytes integer) supabase_admin
+686; 1255 29127 FUNCTION realtime quote_wal2json(regclass) supabase_admin
+4841; 0 0 ACL realtime FUNCTION quote_wal2json(entity regclass) supabase_admin
+696; 1255 29252 FUNCTION realtime send(jsonb, text, text, boolean) supabase_admin
+4842; 0 0 ACL realtime FUNCTION send(payload jsonb, event text, topic text, private boolean) supabase_admin
+692; 1255 29125 FUNCTION realtime subscription_check_filters() supabase_admin
+4843; 0 0 ACL realtime FUNCTION subscription_check_filters() supabase_admin
+689; 1255 29160 FUNCTION realtime to_regrole(text) supabase_admin
+4844; 0 0 ACL realtime FUNCTION to_regrole(role_name text) supabase_admin
+695; 1255 29246 FUNCTION realtime topic() supabase_realtime_admin
+4845; 0 0 ACL realtime FUNCTION topic() supabase_realtime_admin
+682; 1255 29034 FUNCTION storage can_insert_object(text, text, uuid, jsonb) supabase_storage_admin
+678; 1255 29008 FUNCTION storage extension(text) supabase_storage_admin
+677; 1255 29007 FUNCTION storage filename(text) supabase_storage_admin
+676; 1255 29006 FUNCTION storage foldername(text) supabase_storage_admin
+680; 1255 29020 FUNCTION storage get_size_by_bucket() supabase_storage_admin
+683; 1255 29073 FUNCTION storage list_multipart_uploads_with_delimiter(text, text, text, integer, text, text) supabase_storage_admin
+679; 1255 29036 FUNCTION storage list_objects_with_delimiter(text, text, text, integer, text, text) supabase_storage_admin
+685; 1255 29089 FUNCTION storage operation() supabase_storage_admin
+684; 1255 29023 FUNCTION storage search(text, text, integer, integer, integer, text, text, text) supabase_storage_admin
+681; 1255 29024 FUNCTION storage update_updated_at_column() supabase_storage_admin
+524; 1255 96689 FUNCTION supabase_functions http_request() supabase_functions_admin
+4846; 0 0 ACL supabase_functions FUNCTION http_request() supabase_functions_admin
+624; 1255 16974 FUNCTION vault secrets_encrypt_secret_secret() supabase_admin
+328; 1259 16519 TABLE auth audit_log_entries supabase_auth_admin
+4847; 0 0 COMMENT auth TABLE audit_log_entries supabase_auth_admin
+4848; 0 0 ACL auth TABLE audit_log_entries supabase_auth_admin
+358; 1259 28931 TABLE auth flow_state supabase_auth_admin
+4849; 0 0 COMMENT auth TABLE flow_state supabase_auth_admin
+4850; 0 0 ACL auth TABLE flow_state supabase_auth_admin
+349; 1259 28728 TABLE auth identities supabase_auth_admin
+4851; 0 0 COMMENT auth TABLE identities supabase_auth_admin
+4852; 0 0 COMMENT auth COLUMN identities.email supabase_auth_admin
+4853; 0 0 ACL auth TABLE identities supabase_auth_admin
+327; 1259 16512 TABLE auth instances supabase_auth_admin
+4854; 0 0 COMMENT auth TABLE instances supabase_auth_admin
+4855; 0 0 ACL auth TABLE instances supabase_auth_admin
+353; 1259 28818 TABLE auth mfa_amr_claims supabase_auth_admin
+4856; 0 0 COMMENT auth TABLE mfa_amr_claims supabase_auth_admin
+4857; 0 0 ACL auth TABLE mfa_amr_claims supabase_auth_admin
+352; 1259 28806 TABLE auth mfa_challenges supabase_auth_admin
+4858; 0 0 COMMENT auth TABLE mfa_challenges supabase_auth_admin
+4859; 0 0 ACL auth TABLE mfa_challenges supabase_auth_admin
+351; 1259 28793 TABLE auth mfa_factors supabase_auth_admin
+4860; 0 0 COMMENT auth TABLE mfa_factors supabase_auth_admin
+4861; 0 0 ACL auth TABLE mfa_factors supabase_auth_admin
+359; 1259 28981 TABLE auth one_time_tokens supabase_auth_admin
+4862; 0 0 ACL auth TABLE one_time_tokens supabase_auth_admin
+326; 1259 16501 TABLE auth refresh_tokens supabase_auth_admin
+4863; 0 0 COMMENT auth TABLE refresh_tokens supabase_auth_admin
+4864; 0 0 ACL auth TABLE refresh_tokens supabase_auth_admin
+325; 1259 16500 SEQUENCE auth refresh_tokens_id_seq supabase_auth_admin
+4865; 0 0 SEQUENCE OWNED BY auth refresh_tokens_id_seq supabase_auth_admin
+4866; 0 0 ACL auth SEQUENCE refresh_tokens_id_seq supabase_auth_admin
+356; 1259 28860 TABLE auth saml_providers supabase_auth_admin
+4867; 0 0 COMMENT auth TABLE saml_providers supabase_auth_admin
+4868; 0 0 ACL auth TABLE saml_providers supabase_auth_admin
+357; 1259 28878 TABLE auth saml_relay_states supabase_auth_admin
+4869; 0 0 COMMENT auth TABLE saml_relay_states supabase_auth_admin
+4870; 0 0 ACL auth TABLE saml_relay_states supabase_auth_admin
+329; 1259 16527 TABLE auth schema_migrations supabase_auth_admin
+4871; 0 0 COMMENT auth TABLE schema_migrations supabase_auth_admin
+4872; 0 0 ACL auth TABLE schema_migrations supabase_auth_admin
+350; 1259 28758 TABLE auth sessions supabase_auth_admin
+4873; 0 0 COMMENT auth TABLE sessions supabase_auth_admin
+4874; 0 0 COMMENT auth COLUMN sessions.not_after supabase_auth_admin
+4875; 0 0 ACL auth TABLE sessions supabase_auth_admin
+355; 1259 28845 TABLE auth sso_domains supabase_auth_admin
+4876; 0 0 COMMENT auth TABLE sso_domains supabase_auth_admin
+4877; 0 0 ACL auth TABLE sso_domains supabase_auth_admin
+354; 1259 28836 TABLE auth sso_providers supabase_auth_admin
+4878; 0 0 COMMENT auth TABLE sso_providers supabase_auth_admin
+4879; 0 0 COMMENT auth COLUMN sso_providers.resource_id supabase_auth_admin
+4880; 0 0 ACL auth TABLE sso_providers supabase_auth_admin
+324; 1259 16489 TABLE auth users supabase_auth_admin
+4881; 0 0 COMMENT auth TABLE users supabase_auth_admin
+4882; 0 0 COMMENT auth COLUMN users.is_sso_user supabase_auth_admin
+4883; 0 0 ACL auth TABLE users supabase_auth_admin
+4884; 0 0 ACL extensions TABLE pg_stat_statements postgres
+4885; 0 0 ACL extensions TABLE pg_stat_statements_info postgres
+4886; 0 0 ACL pgsodium TABLE decrypted_key supabase_admin
+4887; 0 0 ACL pgsodium TABLE masking_rule supabase_admin
+4888; 0 0 ACL pgsodium TABLE mask_columns supabase_admin
+396; 1259 180858 TABLE public autoplaystudio_copilot postgres
+4889; 0 0 ACL public TABLE autoplaystudio_copilot postgres
+381; 1259 54534 TABLE public client_users postgres
+4890; 0 0 ACL public TABLE client_users postgres
+372; 1259 40584 TABLE public clients postgres
+4891; 0 0 ACL public TABLE clients postgres
+392; 1259 114834 TABLE public users postgres
+4892; 0 0 ACL public TABLE users postgres
+393; 1259 142284 VIEW public client_user_view postgres
+4893; 0 0 ACL public TABLE client_user_view postgres
+379; 1259 40916 TABLE public document_versions postgres
+4894; 0 0 ACL public TABLE document_versions postgres
+378; 1259 40893 TABLE public documents postgres
+4895; 0 0 ACL public TABLE documents postgres
+375; 1259 40652 TABLE public invoices postgres
+4896; 0 0 ACL public TABLE invoices postgres
+376; 1259 40673 TABLE public media_collections postgres
+4897; 0 0 ACL public TABLE media_collections postgres
+370; 1259 29410 SEQUENCE public media_id_seq postgres
+4898; 0 0 ACL public SEQUENCE media_id_seq postgres
+397; 1259 182074 TABLE public messages postgres
+4899; 0 0 ACL public TABLE messages postgres
+383; 1259 58790 TABLE public milestone_tasks postgres
+4900; 0 0 ACL public TABLE milestone_tasks postgres
+382; 1259 54578 TABLE public milestones postgres
+4901; 0 0 ACL public TABLE milestones postgres
+394; 1259 157829 TABLE public notifications postgres
+4902; 0 0 ACL public TABLE notifications postgres
+380; 1259 43304 TABLE public project_comments postgres
+4903; 0 0 ACL public TABLE project_comments postgres
+377; 1259 40693 TABLE public project_media postgres
+4904; 0 0 ACL public TABLE project_media postgres
+374; 1259 40622 TABLE public project_members postgres
+4905; 0 0 ACL public TABLE project_members postgres
+369; 1259 29367 TABLE public roles postgres
+4906; 0 0 ACL public TABLE roles postgres
+368; 1259 29256 TABLE realtime messages supabase_realtime_admin
+4907; 0 0 ACL realtime TABLE messages supabase_realtime_admin
+395; 1259 180807 TABLE realtime messages_2025_06_23 supabase_admin
+4908; 0 0 ACL realtime TABLE messages_2025_06_23 supabase_admin
+398; 1259 182176 TABLE realtime messages_2025_06_24 supabase_admin
+4909; 0 0 ACL realtime TABLE messages_2025_06_24 supabase_admin
+399; 1259 183336 TABLE realtime messages_2025_06_25 supabase_admin
+4910; 0 0 ACL realtime TABLE messages_2025_06_25 supabase_admin
+400; 1259 184534 TABLE realtime messages_2025_06_26 supabase_admin
+4911; 0 0 ACL realtime TABLE messages_2025_06_26 supabase_admin
+401; 1259 186873 TABLE realtime messages_2025_06_27 supabase_admin
+4912; 0 0 ACL realtime TABLE messages_2025_06_27 supabase_admin
+402; 1259 186884 TABLE realtime messages_2025_06_28 supabase_admin
+4913; 0 0 ACL realtime TABLE messages_2025_06_28 supabase_admin
+403; 1259 187058 TABLE realtime messages_2025_06_29 supabase_admin
+4914; 0 0 ACL realtime TABLE messages_2025_06_29 supabase_admin
+362; 1259 29091 TABLE realtime schema_migrations supabase_admin
+4915; 0 0 ACL realtime TABLE schema_migrations supabase_admin
+365; 1259 29113 TABLE realtime subscription supabase_admin
+4916; 0 0 ACL realtime TABLE subscription supabase_admin
+364; 1259 29112 SEQUENCE realtime subscription_id_seq supabase_admin
+4917; 0 0 ACL realtime SEQUENCE subscription_id_seq supabase_admin
+330; 1259 16540 TABLE storage buckets supabase_storage_admin
+4918; 0 0 COMMENT storage COLUMN buckets.owner supabase_storage_admin
+4919; 0 0 ACL storage TABLE buckets supabase_storage_admin
+332; 1259 16582 TABLE storage migrations supabase_storage_admin
+4920; 0 0 ACL storage TABLE migrations supabase_storage_admin
+331; 1259 16555 TABLE storage objects supabase_storage_admin
+4921; 0 0 COMMENT storage COLUMN objects.owner supabase_storage_admin
+4922; 0 0 ACL storage TABLE objects supabase_storage_admin
+360; 1259 29038 TABLE storage s3_multipart_uploads supabase_storage_admin
+4923; 0 0 ACL storage TABLE s3_multipart_uploads supabase_storage_admin
+361; 1259 29052 TABLE storage s3_multipart_uploads_parts supabase_storage_admin
+4924; 0 0 ACL storage TABLE s3_multipart_uploads_parts supabase_storage_admin
+391; 1259 96678 TABLE supabase_functions hooks supabase_functions_admin
+4925; 0 0 COMMENT supabase_functions TABLE hooks supabase_functions_admin
+4926; 0 0 ACL supabase_functions TABLE hooks supabase_functions_admin
+390; 1259 96677 SEQUENCE supabase_functions hooks_id_seq supabase_functions_admin
+4927; 0 0 SEQUENCE OWNED BY supabase_functions hooks_id_seq supabase_functions_admin
+4928; 0 0 ACL supabase_functions SEQUENCE hooks_id_seq supabase_functions_admin
+389; 1259 96669 TABLE supabase_functions migrations supabase_functions_admin
+4929; 0 0 ACL supabase_functions TABLE migrations supabase_functions_admin
+347; 1259 16970 VIEW vault decrypted_secrets supabase_admin
+3983; 0 0 TABLE ATTACH realtime messages_2025_06_23 supabase_admin
+3984; 0 0 TABLE ATTACH realtime messages_2025_06_24 supabase_admin
+3985; 0 0 TABLE ATTACH realtime messages_2025_06_25 supabase_admin
+3986; 0 0 TABLE ATTACH realtime messages_2025_06_26 supabase_admin
+3987; 0 0 TABLE ATTACH realtime messages_2025_06_27 supabase_admin
+3988; 0 0 TABLE ATTACH realtime messages_2025_06_28 supabase_admin
+3989; 0 0 TABLE ATTACH realtime messages_2025_06_29 supabase_admin
+3999; 2604 16504 DEFAULT auth refresh_tokens id supabase_auth_admin
+4096; 2604 96681 DEFAULT supabase_functions hooks id supabase_functions_admin
+4641; 0 16519 TABLE DATA auth audit_log_entries supabase_auth_admin
+4655; 0 28931 TABLE DATA auth flow_state supabase_auth_admin
+4646; 0 28728 TABLE DATA auth identities supabase_auth_admin
+4640; 0 16512 TABLE DATA auth instances supabase_auth_admin
+4650; 0 28818 TABLE DATA auth mfa_amr_claims supabase_auth_admin
+4649; 0 28806 TABLE DATA auth mfa_challenges supabase_auth_admin
+4648; 0 28793 TABLE DATA auth mfa_factors supabase_auth_admin
+4656; 0 28981 TABLE DATA auth one_time_tokens supabase_auth_admin
+4639; 0 16501 TABLE DATA auth refresh_tokens supabase_auth_admin
+4653; 0 28860 TABLE DATA auth saml_providers supabase_auth_admin
+4654; 0 28878 TABLE DATA auth saml_relay_states supabase_auth_admin
+4642; 0 16527 TABLE DATA auth schema_migrations supabase_auth_admin
+4647; 0 28758 TABLE DATA auth sessions supabase_auth_admin
+4652; 0 28845 TABLE DATA auth sso_domains supabase_auth_admin
+4651; 0 28836 TABLE DATA auth sso_providers supabase_auth_admin
+4637; 0 16489 TABLE DATA auth users supabase_auth_admin
+3980; 0 16790 TABLE DATA pgsodium key supabase_admin
+4683; 0 180858 TABLE DATA public autoplaystudio_copilot postgres
+4674; 0 54534 TABLE DATA public client_users postgres
+4665; 0 40584 TABLE DATA public clients postgres
+4672; 0 40916 TABLE DATA public document_versions postgres
+4671; 0 40893 TABLE DATA public documents postgres
+4668; 0 40652 TABLE DATA public invoices postgres
+4664; 0 29411 TABLE DATA public media postgres
+4669; 0 40673 TABLE DATA public media_collections postgres
+4684; 0 182074 TABLE DATA public messages postgres
+4676; 0 58790 TABLE DATA public milestone_tasks postgres
+4675; 0 54578 TABLE DATA public milestones postgres
+4681; 0 157829 TABLE DATA public notifications postgres
+4673; 0 43304 TABLE DATA public project_comments postgres
+4670; 0 40693 TABLE DATA public project_media postgres
+4667; 0 40622 TABLE DATA public project_members postgres
+4666; 0 40600 TABLE DATA public projects postgres
+4662; 0 29367 TABLE DATA public roles postgres
+4680; 0 114834 TABLE DATA public users postgres
+4682; 0 180807 TABLE DATA realtime messages_2025_06_23 supabase_admin
+4685; 0 182176 TABLE DATA realtime messages_2025_06_24 supabase_admin
+4686; 0 183336 TABLE DATA realtime messages_2025_06_25 supabase_admin
+4687; 0 184534 TABLE DATA realtime messages_2025_06_26 supabase_admin
+4688; 0 186873 TABLE DATA realtime messages_2025_06_27 supabase_admin
+4689; 0 186884 TABLE DATA realtime messages_2025_06_28 supabase_admin
+4690; 0 187058 TABLE DATA realtime messages_2025_06_29 supabase_admin
+4659; 0 29091 TABLE DATA realtime schema_migrations supabase_admin
+4661; 0 29113 TABLE DATA realtime subscription supabase_admin
+4643; 0 16540 TABLE DATA storage buckets supabase_storage_admin
+4645; 0 16582 TABLE DATA storage migrations supabase_storage_admin
+4644; 0 16555 TABLE DATA storage objects supabase_storage_admin
+4657; 0 29038 TABLE DATA storage s3_multipart_uploads supabase_storage_admin
+4658; 0 29052 TABLE DATA storage s3_multipart_uploads_parts supabase_storage_admin
+4679; 0 96678 TABLE DATA supabase_functions hooks supabase_functions_admin
+4677; 0 96669 TABLE DATA supabase_functions migrations supabase_functions_admin
+3982; 0 16951 TABLE DATA vault secrets supabase_admin
+4930; 0 0 SEQUENCE SET auth refresh_tokens_id_seq supabase_auth_admin
+4931; 0 0 SEQUENCE SET pgsodium key_key_id_seq supabase_admin
+4932; 0 0 SEQUENCE SET public media_id_seq postgres
+4933; 0 0 SEQUENCE SET realtime subscription_id_seq supabase_admin
+4934; 0 0 SEQUENCE SET supabase_functions hooks_id_seq supabase_functions_admin
+4223; 2606 28831 CONSTRAINT auth mfa_amr_claims amr_id_pk supabase_auth_admin
+4174; 2606 16525 CONSTRAINT auth audit_log_entries audit_log_entries_pkey supabase_auth_admin
+4245; 2606 28937 CONSTRAINT auth flow_state flow_state_pkey supabase_auth_admin
+4202; 2606 28955 CONSTRAINT auth identities identities_pkey supabase_auth_admin
+4204; 2606 28965 CONSTRAINT auth identities identities_provider_id_provider_unique supabase_auth_admin
+4172; 2606 16518 CONSTRAINT auth instances instances_pkey supabase_auth_admin
+4225; 2606 28824 CONSTRAINT auth mfa_amr_claims mfa_amr_claims_session_id_authentication_method_pkey supabase_auth_admin
+4221; 2606 28812 CONSTRAINT auth mfa_challenges mfa_challenges_pkey supabase_auth_admin
+4213; 2606 29005 CONSTRAINT auth mfa_factors mfa_factors_last_challenged_at_key supabase_auth_admin
+4215; 2606 28799 CONSTRAINT auth mfa_factors mfa_factors_pkey supabase_auth_admin
+4249; 2606 28990 CONSTRAINT auth one_time_tokens one_time_tokens_pkey supabase_auth_admin
+4166; 2606 16508 CONSTRAINT auth refresh_tokens refresh_tokens_pkey supabase_auth_admin
+4169; 2606 28741 CONSTRAINT auth refresh_tokens refresh_tokens_token_unique supabase_auth_admin
+4234; 2606 28871 CONSTRAINT auth saml_providers saml_providers_entity_id_key supabase_auth_admin
+4236; 2606 28869 CONSTRAINT auth saml_providers saml_providers_pkey supabase_auth_admin
+4241; 2606 28885 CONSTRAINT auth saml_relay_states saml_relay_states_pkey supabase_auth_admin
+4177; 2606 16531 CONSTRAINT auth schema_migrations schema_migrations_pkey supabase_auth_admin
+4208; 2606 28762 CONSTRAINT auth sessions sessions_pkey supabase_auth_admin
+4231; 2606 28852 CONSTRAINT auth sso_domains sso_domains_pkey supabase_auth_admin
+4227; 2606 28843 CONSTRAINT auth sso_providers sso_providers_pkey supabase_auth_admin
+4159; 2606 28925 CONSTRAINT auth users users_phone_key supabase_auth_admin
+4161; 2606 16495 CONSTRAINT auth users users_pkey supabase_auth_admin
+4321; 2606 180869 CONSTRAINT public autoplaystudio_copilot autoplaystudio_copilot_pkey postgres
+4295; 2606 54545 CONSTRAINT public client_users client_users_pkey postgres
+4271; 2606 40594 CONSTRAINT public clients companies_pkey postgres
+4289; 2606 40924 CONSTRAINT public document_versions document_versions_pkey postgres
+4287; 2606 40905 CONSTRAINT public documents documents_pkey postgres
+4279; 2606 40662 CONSTRAINT public invoices invoices_pkey postgres
+4281; 2606 40682 CONSTRAINT public media_collections media_collections_pkey postgres
+4269; 2606 29420 CONSTRAINT public media media_pkey postgres
+4323; 2606 182082 CONSTRAINT public messages messages_pkey postgres
+4307; 2606 58800 CONSTRAINT public milestone_tasks milestone_tasks_pkey postgres
+4302; 2606 54589 CONSTRAINT public milestones milestones_pkey postgres
+4317; 2606 157839 CONSTRAINT public notifications notifications_pkey postgres
+4293; 2606 43315 CONSTRAINT public project_comments project_comments_pkey postgres
+4283; 2606 40701 CONSTRAINT public project_media project_media_collection_id_media_id_key postgres
+4285; 2606 40699 CONSTRAINT public project_media project_media_pkey postgres
+4275; 2606 40629 CONSTRAINT public project_members project_members_pkey postgres
+4277; 2606 40631 CONSTRAINT public project_members project_members_project_id_user_id_key postgres
+4273; 2606 40611 CONSTRAINT public projects projects_pkey postgres
+4267; 2606 29376 CONSTRAINT public roles roles_pkey postgres
+4315; 2606 114845 CONSTRAINT public users users_pkey postgres
+4265; 2606 29270 CONSTRAINT realtime messages messages_pkey supabase_realtime_admin
+4319; 2606 180815 CONSTRAINT realtime messages_2025_06_23 messages_2025_06_23_pkey supabase_admin
+4325; 2606 182184 CONSTRAINT realtime messages_2025_06_24 messages_2025_06_24_pkey supabase_admin
+4327; 2606 183344 CONSTRAINT realtime messages_2025_06_25 messages_2025_06_25_pkey supabase_admin
+4329; 2606 184542 CONSTRAINT realtime messages_2025_06_26 messages_2025_06_26_pkey supabase_admin
+4331; 2606 186881 CONSTRAINT realtime messages_2025_06_27 messages_2025_06_27_pkey supabase_admin
+4333; 2606 186892 CONSTRAINT realtime messages_2025_06_28 messages_2025_06_28_pkey supabase_admin
+4335; 2606 187066 CONSTRAINT realtime messages_2025_06_29 messages_2025_06_29_pkey supabase_admin
+4262; 2606 29121 CONSTRAINT realtime subscription pk_subscription supabase_admin
+4259; 2606 29095 CONSTRAINT realtime schema_migrations schema_migrations_pkey supabase_admin
+4180; 2606 16548 CONSTRAINT storage buckets buckets_pkey supabase_storage_admin
+4187; 2606 16589 CONSTRAINT storage migrations migrations_name_key supabase_storage_admin
+4189; 2606 16587 CONSTRAINT storage migrations migrations_pkey supabase_storage_admin
+4185; 2606 16565 CONSTRAINT storage objects objects_pkey supabase_storage_admin
+4257; 2606 29061 CONSTRAINT storage s3_multipart_uploads_parts s3_multipart_uploads_parts_pkey supabase_storage_admin
+4255; 2606 29046 CONSTRAINT storage s3_multipart_uploads s3_multipart_uploads_pkey supabase_storage_admin
+4311; 2606 96686 CONSTRAINT supabase_functions hooks hooks_pkey supabase_functions_admin
+4309; 2606 96676 CONSTRAINT supabase_functions migrations migrations_pkey supabase_functions_admin
+4175; 1259 16526 INDEX auth audit_logs_instance_id_idx supabase_auth_admin
+4149; 1259 28751 INDEX auth confirmation_token_idx supabase_auth_admin
+4150; 1259 28753 INDEX auth email_change_token_current_idx supabase_auth_admin
+4151; 1259 28754 INDEX auth email_change_token_new_idx supabase_auth_admin
+4211; 1259 28833 INDEX auth factor_id_created_at_idx supabase_auth_admin
+4243; 1259 28941 INDEX auth flow_state_created_at_idx supabase_auth_admin
+4200; 1259 28921 INDEX auth identities_email_idx supabase_auth_admin
+4935; 0 0 COMMENT auth INDEX identities_email_idx supabase_auth_admin
+4205; 1259 28748 INDEX auth identities_user_id_idx supabase_auth_admin
+4246; 1259 28938 INDEX auth idx_auth_code supabase_auth_admin
+4247; 1259 28939 INDEX auth idx_user_id_auth_method supabase_auth_admin
+4219; 1259 28944 INDEX auth mfa_challenge_created_at_idx supabase_auth_admin
+4216; 1259 28805 INDEX auth mfa_factors_user_friendly_name_unique supabase_auth_admin
+4217; 1259 28950 INDEX auth mfa_factors_user_id_idx supabase_auth_admin
+4250; 1259 28997 INDEX auth one_time_tokens_relates_to_hash_idx supabase_auth_admin
+4251; 1259 28996 INDEX auth one_time_tokens_token_hash_hash_idx supabase_auth_admin
+4252; 1259 28998 INDEX auth one_time_tokens_user_id_token_type_key supabase_auth_admin
+4152; 1259 28755 INDEX auth reauthentication_token_idx supabase_auth_admin
+4153; 1259 28752 INDEX auth recovery_token_idx supabase_auth_admin
+4162; 1259 16509 INDEX auth refresh_tokens_instance_id_idx supabase_auth_admin
+4163; 1259 16510 INDEX auth refresh_tokens_instance_id_user_id_idx supabase_auth_admin
+4164; 1259 28747 INDEX auth refresh_tokens_parent_idx supabase_auth_admin
+4167; 1259 28835 INDEX auth refresh_tokens_session_id_revoked_idx supabase_auth_admin
+4170; 1259 28940 INDEX auth refresh_tokens_updated_at_idx supabase_auth_admin
+4237; 1259 28877 INDEX auth saml_providers_sso_provider_id_idx supabase_auth_admin
+4238; 1259 28942 INDEX auth saml_relay_states_created_at_idx supabase_auth_admin
+4239; 1259 28892 INDEX auth saml_relay_states_for_email_idx supabase_auth_admin
+4242; 1259 28891 INDEX auth saml_relay_states_sso_provider_id_idx supabase_auth_admin
+4206; 1259 28943 INDEX auth sessions_not_after_idx supabase_auth_admin
+4209; 1259 28834 INDEX auth sessions_user_id_idx supabase_auth_admin
+4229; 1259 28859 INDEX auth sso_domains_domain_idx supabase_auth_admin
+4232; 1259 28858 INDEX auth sso_domains_sso_provider_id_idx supabase_auth_admin
+4228; 1259 28844 INDEX auth sso_providers_resource_id_idx supabase_auth_admin
+4218; 1259 29003 INDEX auth unique_phone_factor_per_user supabase_auth_admin
+4210; 1259 28832 INDEX auth user_id_created_at_idx supabase_auth_admin
+4154; 1259 28912 INDEX auth users_email_partial_key supabase_auth_admin
+4936; 0 0 COMMENT auth INDEX users_email_partial_key supabase_auth_admin
+4155; 1259 28749 INDEX auth users_instance_id_email_idx supabase_auth_admin
+4156; 1259 16499 INDEX auth users_instance_id_idx supabase_auth_admin
+4157; 1259 28967 INDEX auth users_is_anonymous_idx supabase_auth_admin
+4296; 1259 54563 INDEX public idx_client_users_client_id postgres
+4297; 1259 54564 INDEX public idx_client_users_user_id postgres
+4303; 1259 58817 INDEX public idx_milestone_tasks_due_date postgres
+4304; 1259 58816 INDEX public idx_milestone_tasks_milestone_id postgres
+4305; 1259 58818 INDEX public idx_milestone_tasks_status postgres
+4298; 1259 54611 INDEX public idx_milestones_client_id postgres
+4299; 1259 54612 INDEX public idx_milestones_created_by postgres
+4300; 1259 54610 INDEX public idx_milestones_project_id postgres
+4290; 1259 43374 INDEX public idx_project_comments_resolution postgres
+4291; 1259 59522 INDEX public idx_project_comments_user_project postgres
+4260; 1259 29271 INDEX realtime ix_realtime_subscription_entity supabase_admin
+4263; 1259 29170 INDEX realtime subscription_subscription_id_entity_filters_key supabase_admin
+4178; 1259 16554 INDEX storage bname supabase_storage_admin
+4181; 1259 16576 INDEX storage bucketid_objname supabase_storage_admin
+4253; 1259 29072 INDEX storage idx_multipart_uploads_list supabase_storage_admin
+4182; 1259 29037 INDEX storage idx_objects_bucket_id_name supabase_storage_admin
+4183; 1259 16577 INDEX storage name_prefix_search supabase_storage_admin
+4312; 1259 96688 INDEX supabase_functions supabase_functions_hooks_h_table_id_h_name_idx supabase_functions_admin
+4313; 1259 96687 INDEX supabase_functions supabase_functions_hooks_request_id_idx supabase_functions_admin
+4336; 0 0 INDEX ATTACH realtime messages_2025_06_23_pkey supabase_realtime_admin
+4337; 0 0 INDEX ATTACH realtime messages_2025_06_24_pkey supabase_realtime_admin
+4338; 0 0 INDEX ATTACH realtime messages_2025_06_25_pkey supabase_realtime_admin
+4339; 0 0 INDEX ATTACH realtime messages_2025_06_26_pkey supabase_realtime_admin
+4340; 0 0 INDEX ATTACH realtime messages_2025_06_27_pkey supabase_realtime_admin
+4341; 0 0 INDEX ATTACH realtime messages_2025_06_28_pkey supabase_realtime_admin
+4342; 0 0 INDEX ATTACH realtime messages_2025_06_29_pkey supabase_realtime_admin
+4406; 2620 54568 TRIGGER public client_users update_client_users_updated_at postgres
+4400; 2620 40724 TRIGGER public clients update_companies_updated_at postgres
+4403; 2620 40727 TRIGGER public invoices update_invoices_updated_at postgres
+4404; 2620 40728 TRIGGER public media_collections update_media_collections_updated_at postgres
+4408; 2620 58822 TRIGGER public milestone_tasks update_milestone_tasks_updated_at postgres
+4407; 2620 54615 TRIGGER public milestones update_milestones_updated_at postgres
+4405; 2620 43335 TRIGGER public project_comments update_project_comments_updated_at postgres
+4402; 2620 40726 TRIGGER public project_members update_project_members_updated_at postgres
+4401; 2620 40725 TRIGGER public projects update_projects_updated_at postgres
+4399; 2620 29126 TRIGGER realtime subscription tr_check_filters supabase_admin
+4398; 2620 29025 TRIGGER storage objects update_objects_updated_at supabase_storage_admin
+4345; 2606 28735 FK CONSTRAINT auth identities identities_user_id_fkey supabase_auth_admin
+4349; 2606 28825 FK CONSTRAINT auth mfa_amr_claims mfa_amr_claims_session_id_fkey supabase_auth_admin
+4348; 2606 28813 FK CONSTRAINT auth mfa_challenges mfa_challenges_auth_factor_id_fkey supabase_auth_admin
+4347; 2606 28800 FK CONSTRAINT auth mfa_factors mfa_factors_user_id_fkey supabase_auth_admin
+4354; 2606 28991 FK CONSTRAINT auth one_time_tokens one_time_tokens_user_id_fkey supabase_auth_admin
+4343; 2606 28768 FK CONSTRAINT auth refresh_tokens refresh_tokens_session_id_fkey supabase_auth_admin
+4351; 2606 28872 FK CONSTRAINT auth saml_providers saml_providers_sso_provider_id_fkey supabase_auth_admin
+4352; 2606 28945 FK CONSTRAINT auth saml_relay_states saml_relay_states_flow_state_id_fkey supabase_auth_admin
+4353; 2606 28886 FK CONSTRAINT auth saml_relay_states saml_relay_states_sso_provider_id_fkey supabase_auth_admin
+4346; 2606 28763 FK CONSTRAINT auth sessions sessions_user_id_fkey supabase_auth_admin
+4350; 2606 28853 FK CONSTRAINT auth sso_domains sso_domains_sso_provider_id_fkey supabase_auth_admin
+4382; 2606 58485 FK CONSTRAINT public client_users client_users_client_id_fkey postgres
+4383; 2606 54558 FK CONSTRAINT public client_users client_users_created_by_fkey postgres
+4384; 2606 133100 FK CONSTRAINT public client_users client_users_role_id_fkey postgres
+4385; 2606 54553 FK CONSTRAINT public client_users client_users_user_id_fkey postgres
+4376; 2606 40930 FK CONSTRAINT public document_versions document_versions_created_by_fkey postgres
+4377; 2606 40925 FK CONSTRAINT public document_versions document_versions_document_id_fkey postgres
+4374; 2606 40911 FK CONSTRAINT public documents documents_created_by_fkey postgres
+4375; 2606 40906 FK CONSTRAINT public documents documents_project_id_fkey postgres
+4358; 2606 29421 FK CONSTRAINT public media fk_user postgres
+4367; 2606 40668 FK CONSTRAINT public invoices invoices_created_by_fkey postgres
+4368; 2606 40663 FK CONSTRAINT public invoices invoices_project_id_fkey postgres
+4369; 2606 61543 FK CONSTRAINT public media_collections media_collections_client_id_fkey postgres
+4370; 2606 40688 FK CONSTRAINT public media_collections media_collections_created_by_fkey postgres
+4359; 2606 80790 FK CONSTRAINT public media media_media_collection_fkey postgres
+4360; 2606 82660 FK CONSTRAINT public media media_milestone_id_fkey postgres
+4390; 2606 58806 FK CONSTRAINT public milestone_tasks milestone_tasks_assigned_to_fkey postgres
+4391; 2606 58811 FK CONSTRAINT public milestone_tasks milestone_tasks_created_by_fkey postgres
+4392; 2606 58801 FK CONSTRAINT public milestone_tasks milestone_tasks_milestone_id_fkey postgres
+4386; 2606 54600 FK CONSTRAINT public milestones milestones_assignee_id_fkey postgres
+4387; 2606 58490 FK CONSTRAINT public milestones milestones_client_id_fkey postgres
+4388; 2606 54605 FK CONSTRAINT public milestones milestones_created_by_fkey postgres
+4389; 2606 54590 FK CONSTRAINT public milestones milestones_project_id_fkey postgres
+4394; 2606 157845 FK CONSTRAINT public notifications notifications_actor_id_fkey postgres
+4395; 2606 157850 FK CONSTRAINT public notifications notifications_comment_id_fkey postgres
+4396; 2606 157855 FK CONSTRAINT public notifications notifications_project_id_fkey postgres
+4397; 2606 157840 FK CONSTRAINT public notifications notifications_recipient_id_fkey postgres
+4378; 2606 43326 FK CONSTRAINT public project_comments project_comments_parent_id_fkey postgres
+4379; 2606 43316 FK CONSTRAINT public project_comments project_comments_project_id_fkey postgres
+4380; 2606 43369 FK CONSTRAINT public project_comments project_comments_resolved_by_fkey postgres
+4381; 2606 43321 FK CONSTRAINT public project_comments project_comments_user_id_fkey postgres
+4371; 2606 40702 FK CONSTRAINT public project_media project_media_collection_id_fkey postgres
+4372; 2606 40712 FK CONSTRAINT public project_media project_media_created_by_fkey postgres
+4373; 2606 40707 FK CONSTRAINT public project_media project_media_media_id_fkey postgres
+4364; 2606 40647 FK CONSTRAINT public project_members project_members_created_by_fkey postgres
+4365; 2606 56913 FK CONSTRAINT public project_members project_members_project_id_fkey postgres
+4366; 2606 40637 FK CONSTRAINT public project_members project_members_user_id_fkey postgres
+4361; 2606 58480 FK CONSTRAINT public projects projects_company_id_fkey postgres
+4362; 2606 40617 FK CONSTRAINT public projects projects_created_by_fkey postgres
+4363; 2606 61410 FK CONSTRAINT public projects projects_project_media_id_fkey postgres
+4393; 2606 114851 FK CONSTRAINT public users users_id_fkey postgres
+4344; 2606 16566 FK CONSTRAINT storage objects objects_bucketId_fkey supabase_storage_admin
+4355; 2606 29047 FK CONSTRAINT storage s3_multipart_uploads s3_multipart_uploads_bucket_id_fkey supabase_storage_admin
+4356; 2606 29067 FK CONSTRAINT storage s3_multipart_uploads_parts s3_multipart_uploads_parts_bucket_id_fkey supabase_storage_admin
+4357; 2606 29062 FK CONSTRAINT storage s3_multipart_uploads_parts s3_multipart_uploads_parts_upload_id_fkey supabase_storage_admin
+4562; 0 16519 ROW SECURITY auth audit_log_entries supabase_auth_admin
+4576; 0 28931 ROW SECURITY auth flow_state supabase_auth_admin
+4567; 0 28728 ROW SECURITY auth identities supabase_auth_admin
+4561; 0 16512 ROW SECURITY auth instances supabase_auth_admin
+4571; 0 28818 ROW SECURITY auth mfa_amr_claims supabase_auth_admin
+4570; 0 28806 ROW SECURITY auth mfa_challenges supabase_auth_admin
+4569; 0 28793 ROW SECURITY auth mfa_factors supabase_auth_admin
+4577; 0 28981 ROW SECURITY auth one_time_tokens supabase_auth_admin
+4560; 0 16501 ROW SECURITY auth refresh_tokens supabase_auth_admin
+4574; 0 28860 ROW SECURITY auth saml_providers supabase_auth_admin
+4575; 0 28878 ROW SECURITY auth saml_relay_states supabase_auth_admin
+4563; 0 16527 ROW SECURITY auth schema_migrations supabase_auth_admin
+4568; 0 28758 ROW SECURITY auth sessions supabase_auth_admin
+4573; 0 28845 ROW SECURITY auth sso_domains supabase_auth_admin
+4572; 0 28836 ROW SECURITY auth sso_providers supabase_auth_admin
+4559; 0 16489 ROW SECURITY auth users supabase_auth_admin
+4598; 3256 40938 POLICY public documents Documents are manageable by project members postgres
+4597; 3256 40937 POLICY public documents Documents are viewable by project members postgres
+4623; 3256 80742 POLICY public media Enable insert for authenticated users only postgres
+4622; 3256 80700 POLICY public media_collections Enable insert for authenticated users only postgres
+4614; 3256 59150 POLICY public milestone_tasks Enable insert for authenticated users only postgres
+4610; 3256 58558 POLICY public milestones Enable insert for authenticated users only postgres
+4600; 3256 43350 POLICY public project_comments Enable insert for authenticated users only postgres
+4621; 3256 71872 POLICY public project_media Enable insert for authenticated users only postgres
+4608; 3256 56848 POLICY public projects Enable insert for authenticated users only postgres
+4601; 3256 43351 POLICY public project_comments Enable insert for users based on user_id postgres
+4609; 3256 57132 POLICY public client_users Enable read access for all users postgres
+4611; 3256 58704 POLICY public clients Enable read access for all users postgres
+4616; 3256 61568 POLICY public media_collections Enable read access for all users postgres
+4606; 3256 54613 POLICY public milestones Enable read access for all users postgres
+4615; 3256 59314 POLICY public project_media Enable read access for all users postgres
+4596; 3256 40791 POLICY public projects Enable read access for all users postgres
+4592; 3256 29426 POLICY public media Media is viewable by everyone postgres
+4612; 3256 58819 POLICY public milestone_tasks Milestone tasks are viewable by everyone postgres
+4603; 3256 43378 POLICY public project_comments Policy with security definer functions postgres
+4599; 3256 43344 POLICY public project_comments Project members can create comments postgres
+4613; 3256 58820 POLICY public milestone_tasks Project members can manage milestone tasks postgres
+4607; 3256 54614 POLICY public milestones Project members can manage milestones postgres
+4602; 3256 43365 POLICY public project_comments Project members can view comments postgres
+4595; 3256 40719 POLICY public projects Projects viewable by members postgres
+4588; 3256 29397 POLICY public roles Public can view roles postgres
+4591; 3256 29400 POLICY public roles Service role can delete roles postgres
+4589; 3256 29398 POLICY public roles Service role can insert roles postgres
+4590; 3256 29399 POLICY public roles Service role can update roles postgres
+4594; 3256 43366 POLICY public project_comments Users can manage their own comments postgres
+4593; 3256 29427 POLICY public media Users can manage their own media postgres
+4584; 0 40916 ROW SECURITY public document_versions postgres
+4583; 0 40893 ROW SECURITY public documents postgres
+4582; 0 40652 ROW SECURITY public invoices postgres
+4587; 0 58790 ROW SECURITY public milestone_tasks postgres
+4586; 0 54578 ROW SECURITY public milestones postgres
+4585; 0 43304 ROW SECURITY public project_comments postgres
+4581; 0 40622 ROW SECURITY public project_members postgres
+4580; 0 29256 ROW SECURITY realtime messages supabase_realtime_admin
+4604; 3256 65896 POLICY storage objects Allow authenticated uploads supabase_storage_admin
+4605; 3256 65897 POLICY storage objects Allow public read access supabase_storage_admin
+4626; 3256 127422 POLICY storage objects Allow users to upload a profile img 5psubw_0 supabase_storage_admin
+4624; 3256 127420 POLICY storage objects Allow users to upload a profile img 5psubw_1 supabase_storage_admin
+4625; 3256 127421 POLICY storage objects Allow users to upload a profile img 5psubw_2 supabase_storage_admin
+4627; 3256 127423 POLICY storage objects Allow users to upload a profile img 5psubw_3 supabase_storage_admin
+4618; 3256 65893 POLICY storage objects Give users authenticated access to folder 1va6avm_0 supabase_storage_admin
+4617; 3256 65892 POLICY storage objects Give users authenticated access to folder 1va6avm_1 supabase_storage_admin
+4620; 3256 65895 POLICY storage objects Give users authenticated access to folder 1va6avm_2 supabase_storage_admin
+4619; 3256 65894 POLICY storage objects Give users authenticated access to folder 1va6avm_3 supabase_storage_admin
+4564; 0 16540 ROW SECURITY storage buckets supabase_storage_admin
+4566; 0 16582 ROW SECURITY storage migrations supabase_storage_admin
+4565; 0 16555 ROW SECURITY storage objects supabase_storage_admin
+4578; 0 29038 ROW SECURITY storage s3_multipart_uploads supabase_storage_admin
+4579; 0 29052 ROW SECURITY storage s3_multipart_uploads_parts supabase_storage_admin
+4629; 6104 16420 PUBLICATION - supabase_realtime postgres
+4628; 6104 29365 PUBLICATION - supabase_realtime_messages_publication supabase_admin
+4635; 6106 182128 PUBLICATION TABLE public supabase_realtime clients postgres
+4631; 6106 182124 PUBLICATION TABLE public supabase_realtime messages postgres
+4632; 6106 182125 PUBLICATION TABLE public supabase_realtime project_comments postgres
+4636; 6106 182129 PUBLICATION TABLE public supabase_realtime projects postgres
+4630; 6106 29366 PUBLICATION TABLE realtime supabase_realtime_messages_publication messages supabase_admin
+4634; 6106 182127 PUBLICATION TABLE realtime supabase_realtime messages postgres
+4633; 6106 182126 PUBLICATION TABLE realtime supabase_realtime subscription postgres
+2786; 826 16597 DEFAULT ACL auth DEFAULT PRIVILEGES FOR SEQUENCES supabase_auth_admin
+2787; 826 16598 DEFAULT ACL auth DEFAULT PRIVILEGES FOR FUNCTIONS supabase_auth_admin
+2785; 826 16596 DEFAULT ACL auth DEFAULT PRIVILEGES FOR TABLES supabase_auth_admin
+2801; 826 16980 DEFAULT ACL extensions DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2800; 826 16979 DEFAULT ACL extensions DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2799; 826 16978 DEFAULT ACL extensions DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2804; 826 16631 DEFAULT ACL graphql DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2803; 826 16630 DEFAULT ACL graphql DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2802; 826 16629 DEFAULT ACL graphql DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2791; 826 16611 DEFAULT ACL graphql_public DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2793; 826 16610 DEFAULT ACL graphql_public DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2792; 826 16609 DEFAULT ACL graphql_public DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2798; 826 16839 DEFAULT ACL pgsodium DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2797; 826 16838 DEFAULT ACL pgsodium DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2795; 826 16836 DEFAULT ACL pgsodium_masks DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2796; 826 16837 DEFAULT ACL pgsodium_masks DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2794; 826 16835 DEFAULT ACL pgsodium_masks DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2778; 826 16484 DEFAULT ACL public DEFAULT PRIVILEGES FOR SEQUENCES postgres
+2779; 826 16485 DEFAULT ACL public DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2777; 826 16483 DEFAULT ACL public DEFAULT PRIVILEGES FOR FUNCTIONS postgres
+2781; 826 16487 DEFAULT ACL public DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2776; 826 16482 DEFAULT ACL public DEFAULT PRIVILEGES FOR TABLES postgres
+2780; 826 16486 DEFAULT ACL public DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2789; 826 16601 DEFAULT ACL realtime DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2790; 826 16602 DEFAULT ACL realtime DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2788; 826 16600 DEFAULT ACL realtime DEFAULT PRIVILEGES FOR TABLES supabase_admin
+2784; 826 16539 DEFAULT ACL storage DEFAULT PRIVILEGES FOR SEQUENCES postgres
+2783; 826 16538 DEFAULT ACL storage DEFAULT PRIVILEGES FOR FUNCTIONS postgres
+2782; 826 16537 DEFAULT ACL storage DEFAULT PRIVILEGES FOR TABLES postgres
+2807; 826 96668 DEFAULT ACL supabase_functions DEFAULT PRIVILEGES FOR SEQUENCES supabase_admin
+2806; 826 96667 DEFAULT ACL supabase_functions DEFAULT PRIVILEGES FOR FUNCTIONS supabase_admin
+2805; 826 96666 DEFAULT ACL supabase_functions DEFAULT PRIVILEGES FOR TABLES supabase_admin
+3973; 3466 16615 EVENT TRIGGER - issue_graphql_placeholder supabase_admin
+3979; 3466 16993 EVENT TRIGGER - issue_pg_cron_access supabase_admin
+3972; 3466 16613 EVENT TRIGGER - issue_pg_graphql_access supabase_admin
+3971; 3466 16594 EVENT TRIGGER - issue_pg_net_access postgres
+3974; 3466 16616 EVENT TRIGGER - pgrst_ddl_watch supabase_admin
+3975; 3466 16617 EVENT TRIGGER - pgrst_drop_watch supabase_admin

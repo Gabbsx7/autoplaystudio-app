@@ -3,30 +3,31 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/lib/hooks/use-auth'
 import { supabase } from '@/lib/supabase/client'
+import { usePermissions } from '@/components/role-based/permissions'
+import { useSearchParams } from 'next/navigation'
 
 interface ClientData {
   id: string
   name: string
   description?: string
-  logo?: string
-}
-
-interface Project {
-  id: string
-  name: string
-  description: string
-  status: 'in_progress' | 'draft' | 'proposal' | 'completed'
-  client_id: string
+  logo_url?: string
   created_at: string
-  updated_at: string
-  due_date?: string
-  progress?: number
 }
 
-interface Asset {
+interface ProjectData {
   id: string
   name: string
-  type: 'image' | 'video' | 'document'
+  description?: string
+  status: string
+  progress?: number
+  due_date?: string
+  client_id: string
+}
+
+interface AssetData {
+  id: string
+  name: string
+  type: string
   url: string
   thumbnail_url?: string
   project_id: string
@@ -36,328 +37,147 @@ interface Asset {
   height?: number
 }
 
-interface TeamMember {
+interface MemberData {
   id: string
   name: string
   email: string
-  role: string
   avatar_url?: string
-  is_primary: boolean
-  client_id: string
+  role_name?: string
+  is_primary?: boolean
 }
 
-interface Milestone {
+interface MilestoneData {
   id: string
   name: string
   description?: string
-  status: 'completed' | 'in_progress' | 'pending'
+  status: string
   project_id: string
   due_date?: string
   created_at: string
 }
 
-interface ClientDashboardData {
-  client: ClientData | null
-  projects: Project[]
-  assets: Asset[]
-  teamMembers: TeamMember[]
-  milestones: Milestone[]
-  stats: {
-    activeProjects: number
-    completedProjects: number
-    totalAssets: number
-    pendingReviews: number
-  }
-  loading: boolean
-  error: string | null
+interface ClientStats {
+  totalProjects: number
+  activeProjects: number
+  totalAssets: number
+  totalMembers: number
+  completedMilestones: number
+  pendingMilestones: number
 }
 
-interface ClientUserData {
-  client_id: string
-  clients: {
-    id: string
-    name: string
-    description?: string
-    logo_url?: string
-  }
-}
-
-interface TeamMemberData {
-  id: string
-  users: {
-    id: string
-    name?: string
-    email: string
-    img_profile?: any
-  }
-  roles: {
-    name: string
-  }
-  is_primary: boolean
-}
-
-export function useClientData(): ClientDashboardData {
+export const useClientData = () => {
   const { user } = useAuth()
-  const [data, setData] = useState<ClientDashboardData>({
-    client: null,
-    projects: [],
-    assets: [],
-    teamMembers: [],
-    milestones: [],
-    stats: {
-      activeProjects: 0,
-      completedProjects: 0,
-      totalAssets: 0,
-      pendingReviews: 0,
-    },
-    loading: true,
-    error: null,
+  const { isStudioMember, clientId: userClientId } = usePermissions()
+  const searchParams = useSearchParams()
+
+  // Para studio members, pode vir da URL. Para client members, vem das permissões
+  const clientIdFromUrl = searchParams.get('clientId')
+  const targetClientId = isStudioMember ? clientIdFromUrl : userClientId
+
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [client, setClient] = useState<ClientData | null>(null)
+  const [projects, setProjects] = useState<ProjectData[]>([])
+  const [assets, setAssets] = useState<AssetData[]>([])
+  const [teamMembers, setTeamMembers] = useState<MemberData[]>([])
+  const [milestones, setMilestones] = useState<MilestoneData[]>([])
+  const [stats, setStats] = useState<ClientStats>({
+    totalProjects: 0,
+    activeProjects: 0,
+    totalAssets: 0,
+    totalMembers: 0,
+    completedMilestones: 0,
+    pendingMilestones: 0,
   })
 
   useEffect(() => {
-    if (!user) {
-      setData((prev) => ({ ...prev, loading: false }))
-      return
-    }
+    const fetchClientData = async () => {
+      if (!user || !targetClientId) {
+        setLoading(false)
+        return
+      }
 
-    async function fetchClientData() {
       try {
-        setData((prev) => ({ ...prev, loading: true, error: null }))
+        setLoading(true)
+        setError(null)
 
-        // 1. Buscar dados do cliente do usuário atual
-        const { data: clientUserData, error: clientUserError } = await supabase
-          .from('client_users')
-          .select(
-            `
-            client_id,
-            clients (
-              id,
-              name,
-              description,
-              logo_url
-            )
-          `
-          )
-          .eq('user_id', user.id)
+        console.log('📊 Fetching client data for:', {
+          userId: user.id,
+          targetClientId,
+          isStudioMember,
+          clientIdFromUrl,
+          userClientId,
+        })
+
+        // Fetch client data
+        const { data: clientData, error: clientError } = await supabase
+          .from('clients')
+          .select('*')
+          .eq('id', targetClientId)
           .single()
 
-        if (clientUserError || !clientUserData) {
-          throw new Error(
-            clientUserError?.message ||
-              'Usuário não está associado a nenhum cliente'
-          )
+        if (clientError) {
+          console.error('Client error:', clientError)
+          throw new Error(`Failed to fetch client: ${clientError.message}`)
         }
 
-        const clientId = clientUserData.client_id
-        const client: ClientData = {
-          id: clientUserData.clients.id,
-          name: clientUserData.clients.name,
-          description: clientUserData.clients.description,
-          logo: clientUserData.clients.logo_url,
-        }
+        setClient(clientData)
 
-        // 2. Tentar usar a view para buscar dados do dashboard
+        // Use view for all dashboard data
         const { data: dashboardData, error: dashboardError } = await supabase
           .from('client_dashboard_view')
           .select('*')
-          .eq('client_id', clientId)
+          .eq('client_id', targetClientId)
           .single()
 
         if (dashboardError) {
-          console.warn(
-            'Erro ao usar view, usando consultas individuais:',
-            dashboardError
+          console.error('Dashboard data error:', dashboardError)
+          throw new Error(
+            `Failed to fetch dashboard data: ${dashboardError.message}`
           )
-          // Fallback para consultas individuais se a view não estiver disponível
-          await fetchDataWithIndividualQueries(clientId, client)
-          return
         }
 
-        // 3. Processar dados da view
         if (dashboardData) {
-          const {
-            projects = [],
-            assets = [],
-            team_members = [],
-            milestones = [],
-            stats = {},
-          } = dashboardData
+          // Parse the aggregated data
+          setProjects(dashboardData.projects || [])
+          setAssets(dashboardData.assets || [])
+          setTeamMembers(dashboardData.team_members || [])
+          setMilestones(dashboardData.milestones || [])
 
-          // Transformar dados dos membros da equipe
-          const transformedTeamMembers: TeamMember[] = team_members.map(
-            (tm: any) => ({
-              id: tm.user_id,
-              name: tm.user_name || 'Sem nome',
-              email: tm.user_email,
-              role: tm.role_name,
-              avatar_url: tm.avatar_url,
-              is_primary: tm.is_primary,
-              client_id: clientId,
-            })
-          )
-
-          setData({
-            client,
-            projects: projects || [],
-            assets: assets || [],
-            teamMembers: transformedTeamMembers,
-            milestones: milestones || [],
-            stats: {
-              activeProjects: stats.active_projects || 0,
-              completedProjects: stats.completed_projects || 0,
-              totalAssets: stats.total_assets || 0,
-              pendingReviews: stats.pending_reviews || 0,
-            },
-            loading: false,
-            error: null,
+          // Calculate stats
+          setStats({
+            totalProjects: dashboardData.stats?.total_projects || 0,
+            activeProjects: dashboardData.stats?.active_projects || 0,
+            totalAssets: dashboardData.stats?.total_assets || 0,
+            totalMembers: dashboardData.stats?.total_members || 0,
+            completedMilestones: dashboardData.stats?.completed_milestones || 0,
+            pendingMilestones: dashboardData.stats?.pending_milestones || 0,
           })
-        } else {
-          // Fallback para consultas individuais
-          await fetchDataWithIndividualQueries(clientId, client)
         }
-      } catch (error) {
-        console.error('Erro ao buscar dados do cliente:', error)
-        setData((prev) => ({
-          ...prev,
-          loading: false,
-          error: error instanceof Error ? error.message : 'Erro desconhecido',
-        }))
+      } catch (err) {
+        console.error('Error in fetchClientData:', err)
+        setError(err instanceof Error ? err.message : 'An error occurred')
+      } finally {
+        setLoading(false)
       }
     }
 
-    async function fetchDataWithIndividualQueries(
-      clientId: string,
-      client: ClientData
-    ) {
-      try {
-        // 2. Buscar projetos do cliente
-        const { data: projects, error: projectsError } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('company_id', clientId)
-          .order('created_at', { ascending: false })
+    fetchClientData()
+  }, [user, targetClientId, isStudioMember])
 
-        if (projectsError) {
-          throw new Error(`Erro ao buscar projetos: ${projectsError.message}`)
-        }
-
-        // 3. Buscar assets dos projetos do cliente
-        const projectIds = projects?.map((p: any) => p.id) || []
-
-        // Buscar media através de milestones dos projetos
-        const { data: milestones, error: milestonesError } = await supabase
-          .from('milestones')
-          .select('id')
-          .in('project_id', projectIds)
-
-        if (milestonesError) {
-          throw new Error(
-            `Erro ao buscar milestones: ${milestonesError.message}`
-          )
-        }
-
-        const milestoneIds = milestones?.map((m: any) => m.id) || []
-
-        // Buscar media através de milestones
-        const { data: assets, error: assetsError } = await supabase
-          .from('media')
-          .select('*')
-          .in('milestone_id', milestoneIds)
-          .order('created_at', { ascending: false })
-
-        if (assetsError) {
-          throw new Error(`Erro ao buscar assets: ${assetsError.message}`)
-        }
-
-        // 4. Buscar membros da equipe do cliente - CORRIGIDO para usar img_profile
-        const { data: teamMembers, error: teamError } = await supabase
-          .from('client_users')
-          .select(
-            `
-            id,
-            users!inner (
-              id,
-              name,
-              email,
-              img_profile
-            ),
-            roles!inner (
-              name
-            ),
-            is_primary
-          `
-          )
-          .eq('client_id', clientId)
-
-        if (teamError) {
-          throw new Error(
-            `Erro ao buscar membros da equipe: ${teamError.message}`
-          )
-        }
-
-        // 5. Buscar milestones completos dos projetos
-        const { data: fullMilestones, error: fullMilestonesError } =
-          await supabase
-            .from('milestones')
-            .select('*')
-            .in('project_id', projectIds)
-            .order('created_at', { ascending: false })
-
-        if (fullMilestonesError) {
-          throw new Error(
-            `Erro ao buscar milestones: ${fullMilestonesError.message}`
-          )
-        }
-
-        // 6. Calcular estatísticas
-        const activeProjects =
-          projects?.filter((p: any) => p.status === 'in_progress').length || 0
-        const completedProjects =
-          projects?.filter((p: any) => p.status === 'completed').length || 0
-        const totalAssets = assets?.length || 0
-        const pendingReviews =
-          projects?.filter((p: any) => p.status === 'draft').length || 0
-
-        // 7. Transformar dados dos membros da equipe - CORRIGIDO para usar img_profile
-        const transformedTeamMembers: TeamMember[] =
-          (teamMembers as any[])?.map((tm) => ({
-            id: tm.users.id,
-            name: tm.users.name || 'Sem nome',
-            email: tm.users.email,
-            role: tm.roles.name,
-            avatar_url: tm.users.img_profile?.url, // Usar img_profile.url
-            is_primary: tm.is_primary,
-            client_id: clientId,
-          })) || []
-
-        setData({
-          client,
-          projects: projects || [],
-          assets: assets || [],
-          teamMembers: transformedTeamMembers,
-          milestones: fullMilestones || [],
-          stats: {
-            activeProjects,
-            completedProjects,
-            totalAssets,
-            pendingReviews,
-          },
-          loading: false,
-          error: null,
-        })
-      } catch (error) {
-        console.error('Erro ao buscar dados com consultas individuais:', error)
-        setData((prev) => ({
-          ...prev,
-          loading: false,
-          error: error instanceof Error ? error.message : 'Erro desconhecido',
-        }))
-      }
-    }
-
-    // Usar Promise.resolve para evitar o erro React #31
-    Promise.resolve().then(() => fetchClientData())
-  }, [user])
-
-  return data
+  return {
+    loading,
+    error,
+    client,
+    projects,
+    assets,
+    teamMembers,
+    milestones,
+    stats,
+    // Additional info for debugging
+    isStudioMember,
+    targetClientId,
+    userClientId,
+    clientIdFromUrl,
+  }
 }

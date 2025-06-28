@@ -1,9 +1,10 @@
 'use client'
 
 import { Bell, Menu, Plus } from 'lucide-react'
-import Avatar from '@/components/common/Avatar'
+import { Avatar } from '@/components/common/Avatar'
 import { useAuth } from '@/components/auth/auth-provider'
 import { usePermissions } from '@/components/role-based/permissions'
+import RealtimeChat from '@/components/layout/RealtimeChat'
 
 interface TopbarProps {
   onMenuToggle?: () => void
@@ -62,13 +63,15 @@ export default function Topbar({ onMenuToggle }: TopbarProps) {
           <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
         </button>
 
+        {/* Chat Drawer */}
+        <RealtimeChat />
+
         {/* Avatar do Usuário */}
-        <Avatar
-          src={userData.avatarUrl}
-          alt={userData.name}
-          size={32}
-          fallback={userData.name.charAt(0)}
-        />
+        <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+          <span className="text-xs font-medium text-gray-600">
+            {userData.name.charAt(0).toUpperCase()}
+          </span>
+        </div>
       </div>
     </header>
   )

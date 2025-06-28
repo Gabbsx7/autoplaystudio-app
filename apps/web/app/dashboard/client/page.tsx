@@ -32,6 +32,7 @@ export default function ClientDashboardPage() {
     stats,
     loading,
     error,
+    isStudioMember,
   } = useClientData()
 
   const router = useRouter()
@@ -86,7 +87,7 @@ export default function ClientDashboardPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="flex items-center space-x-2">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span>Carregando dados do cliente...</span>
+            <span>Loading client data...</span>
           </div>
         </div>
       </DashboardLayout>
@@ -99,7 +100,7 @@ export default function ClientDashboardPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="flex items-center space-x-2 text-red-600">
             <AlertCircle className="h-6 w-6" />
-            <span>Erro: {error}</span>
+            <span>Error: {error}</span>
           </div>
         </div>
       </DashboardLayout>
@@ -111,12 +112,9 @@ export default function ClientDashboardPage() {
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <h2 className="text-xl font-semibold mb-2">
-              Cliente não encontrado
-            </h2>
+            <h2 className="text-xl font-semibold mb-2">Client not found</h2>
             <p className="text-muted-foreground">
-              Não foi possível encontrar os dados do cliente associado à sua
-              conta.
+              Unable to find client data associated with your account.
             </p>
           </div>
         </div>
@@ -126,7 +124,9 @@ export default function ClientDashboardPage() {
 
   // Projeto em destaque (primeiro projeto ativo ou o mais recente)
   const featuredProject =
-    projects.find((p: any) => p.status === 'in_progress') || projects[0]
+    projects.find(
+      (p: any) => p.status === 'active' || p.status === 'in_progress'
+    ) || projects[0]
 
   // Assets recentes (últimos 6)
   const recentAssets = assets.slice(0, 6)
@@ -153,12 +153,9 @@ export default function ClientDashboardPage() {
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <h2 className="text-xl font-semibold mb-2">
-              Cliente não encontrado
-            </h2>
+            <h2 className="text-xl font-semibold mb-2">Client not found</h2>
             <p className="text-muted-foreground">
-              Não foi possível encontrar os dados do cliente associado à sua
-              conta.
+              Unable to find client data associated with your account.
             </p>
           </div>
         </div>
@@ -169,10 +166,41 @@ export default function ClientDashboardPage() {
   return (
     <DashboardLayout>
       <div className="space-y-2">
+        {/* Indicador para Studio Members */}
+        {isStudioMember && client && (
+          <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-semibold text-sm">
+                    {client.name?.charAt(0) || 'C'}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-purple-900">
+                    Studio View: {client.name} Dashboard
+                  </h3>
+                  <p className="text-xs text-purple-600">
+                    You are viewing this client's dashboard as a studio member
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  window.location.href = '/dashboard/studio'
+                }}
+                className="px-3 py-1.5 text-xs font-medium text-purple-700 bg-white border border-purple-300 rounded-md hover:bg-purple-50 transition-colors"
+              >
+                ← Back to Studio
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Campo de busca alinhado à esquerda */}
         <div className="py-4 pl-6 mb-2">
           <div className="w-full max-w-md">
-            <SearchBar placeholder="Buscar projetos, assets..." />
+            <SearchBar placeholder="Search projects, assets..." />
           </div>
         </div>
 
@@ -242,38 +270,45 @@ export default function ClientDashboardPage() {
               title="Footlocker CGI production"
               description="Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring..."
               image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=900&q=80"
-              onClick={() => alert('Ver projeto 1')}
+              onClick={() => alert('View project 1')}
             />
             <ProjectTemplate
               title="Footlocker CGI production"
               description="Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring..."
               image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=900&q=80"
-              onClick={() => alert('Ver projeto 2')}
+              onClick={() => alert('View project 2')}
             />
           </div>
         </div>
 
         {/* Atualizações Recentes */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Atualizações Recentes</h2>
+          <h2 className="text-lg font-semibold">Recent Updates</h2>
           <div className="grid gap-4">
             {projects.slice(0, 2).map((project: any) => (
               <RecentUpdateCard
                 key={project.id}
                 id={project.id}
                 type="comment"
-                message={`Projeto "${project.name}" atualizado - Status: ${
+                message={`Project "${project.name}" updated - Status: ${
+                  project.status === 'active' ||
                   project.status === 'in_progress'
-                    ? 'Em andamento'
+                    ? 'In Progress'
                     : project.status === 'completed'
-                    ? 'Concluído'
+                    ? 'Completed'
+                    : project.status === 'paused'
+                    ? 'Paused'
+                    : project.status === 'cancelled'
+                    ? 'Cancelled'
                     : project.status === 'draft'
-                    ? 'Rascunho'
-                    : 'Proposta'
+                    ? 'Draft'
+                    : 'Proposal'
                 }`}
                 project={project.name}
-                time={new Date(project.updated_at).toLocaleDateString('pt-BR')}
-                user="Sistema"
+                time={new Date(
+                  project.updated_at || project.created_at || Date.now()
+                ).toLocaleDateString('en-US')}
+                user="System"
               />
             ))}
           </div>
