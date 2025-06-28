@@ -1,31 +1,56 @@
 import React from 'react'
-import Avatar, { AvatarProps } from './Avatar'
+import { Avatar } from './Avatar'
+
 interface AvatarGroupProps {
-  users: AvatarProps[]
+  users: Array<{
+    id: string
+    name: string
+    avatar_url?: string
+  }>
   max?: number
-  size?: number
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  className?: string
 }
-const AvatarGroup: React.FC<AvatarGroupProps> = ({
+
+export function AvatarGroup({
   users,
-  max = 4,
-  size = 28,
-}) => {
-  const visible = users.slice(0, max)
-  const extra = users.length - visible.length
+  max = 3,
+  size = 'md',
+  className = '',
+}: AvatarGroupProps) {
+  const displayUsers = users.slice(0, max)
+  const remainingCount = users.length - max
+
   return (
-    <div className="flex -space-x-2">
-      {visible.map((u, i) => (
-        <Avatar key={i} {...u} size={size} />
+    <div className={`flex -space-x-2 ${className}`}>
+      {displayUsers.map((user, index) => (
+        <Avatar
+          key={user.id}
+          name={user.name}
+          avatarUrl={user.avatar_url}
+          size={size}
+          className="ring-2 ring-white"
+        />
       ))}
-      {extra > 0 && (
+      {remainingCount > 0 && (
         <div
-          className="inline-flex items-center justify-center rounded-full bg-zinc-300 text-[10px] font-medium text-zinc-600"
-          style={{ width: size, height: size }}
+          className={`
+          rounded-full flex items-center justify-center font-semibold text-white
+          bg-gray-300 ring-2 ring-white
+          ${
+            size === 'sm'
+              ? 'w-6 h-6 text-xs'
+              : size === 'md'
+              ? 'w-8 h-8 text-sm'
+              : size === 'lg'
+              ? 'w-10 h-10 text-base'
+              : 'w-12 h-12 text-lg'
+          }
+        `}
         >
-          +{extra}
+          +{remainingCount}
         </div>
       )}
     </div>
   )
 }
-export default AvatarGroup

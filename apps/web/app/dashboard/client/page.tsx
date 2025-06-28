@@ -1,255 +1,284 @@
 // apps/web/app/dashboard/client/page.tsx - Layout corrigido
 'use client'
 
-import React, { useState } from 'react'
-import { RoleGuard } from '@/components/role-based/role-guard'
-import SearchBar from '@/components/dashboard/SearchBar'
-import ProjectCard from '@/components/dashboard/ProjectCard'
-import AssetGallery from '@/components/dashboard/AssetGallery'
-import FeaturedProjectBanner from '@/components/dashboard/FeaturedProjectBanner'
-import RecentUpdateCard from '@/components/dashboard/RecentUpdateCard'
-import QuickStats from '@/components/dashboard/QuickStats'
-import { Grid, List, MoreHorizontal, Filter, Plus } from 'lucide-react'
-import ProjectTemplate from '@/components/dashboard/ProjectTemplate'
+import { useClientData } from '../../../hooks/use-client-data'
+import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { QuickStats } from '@/components/dashboard/QuickStats'
+import { ProjectCard } from '@/components/dashboard/ProjectCard'
+import { RecentUpdateCard } from '@/components/dashboard/RecentUpdateCard'
+import { FeaturedProjectBanner } from '@/components/dashboard/FeaturedProjectBanner'
+import { SearchBar } from '@/components/dashboard/SearchBar'
+import {
+  Calendar,
+  Users,
+  Image,
+  Video,
+  File,
+  Loader2,
+  AlertCircle,
+  Folder,
+} from 'lucide-react'
+import { TemplatesSection } from '@/components/dashboard/Templates'
+import { useRouter } from 'next/navigation'
+import { ProjectTemplate } from '@/components/dashboard/ProjectTemplate'
 
-export default function ClientDashboard() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [activeTab, setActiveTab] = useState<'projects' | 'assets'>('projects')
+export default function ClientDashboardPage() {
+  const {
+    client,
+    projects,
+    assets,
+    teamMembers,
+    milestones,
+    stats,
+    loading,
+    error,
+  } = useClientData()
 
-  // Mock data baseado no Figma
-  const mockProjects = [
+  const router = useRouter()
+
+  // MOCK: lista de templates
+  const templates = [
     {
       id: '1',
-      title: 'Footlocker CGI production',
+      title: 'CGI Project TEMPLATE',
       description:
-        'Currently in production a CGI video for Footlocker featuring advanced 3D modeling and animation sequences.',
-      status: 'in_progress' as const,
-      teamMembers: [
-        { id: '1', name: 'John Doe', avatar: 'https://placehold.co/32x32' },
-        { id: '2', name: 'Jane Smith', avatar: 'https://placehold.co/32x32' },
-        { id: '3', name: 'Bob Johnson', avatar: 'https://placehold.co/32x32' },
-        { id: '4', name: 'Alice Brown', avatar: 'https://placehold.co/32x32' },
-      ],
-      milestones: [
-        { id: '1', name: 'Concept Design', status: 'completed' as const },
-        { id: '2', name: '3D Modeling', status: 'in_progress' as const },
-        { id: '3', name: 'Animation', status: 'pending' as const },
-        { id: '4', name: 'Final Render', status: 'pending' as const },
-      ],
-      progress: 65,
-      dueDate: '2024-02-15',
+        'Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring...',
+      image:
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
     },
     {
       id: '2',
-      title: 'Nike Brand Campaign',
+      title: 'Animation Project TEMPLATE',
       description:
-        'Complete brand refresh campaign including digital assets, social media content, and print materials.',
-      status: 'draft' as const,
-      teamMembers: [
-        { id: '1', name: 'John Doe', avatar: 'https://placehold.co/32x32' },
-        { id: '2', name: 'Jane Smith', avatar: 'https://placehold.co/32x32' },
-      ],
-      progress: 25,
-      dueDate: '2024-03-01',
+        'Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring...',
+      image:
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
     },
     {
       id: '3',
-      title: 'Adidas Product Launch',
+      title: 'Branding Project TEMPLATE',
       description:
-        'Product launch campaign with focus on sustainability and innovation messaging.',
-      status: 'proposal' as const,
-      teamMembers: [
-        { id: '1', name: 'John Doe', avatar: 'https://placehold.co/32x32' },
-        { id: '2', name: 'Jane Smith', avatar: 'https://placehold.co/32x32' },
-        { id: '3', name: 'Bob Johnson', avatar: 'https://placehold.co/32x32' },
-      ],
-      progress: 10,
-      dueDate: '2024-04-15',
-    },
-  ]
-
-  const mockAssets = [
-    {
-      id: '1',
-      type: 'image' as const,
-      src: 'https://placehold.co/400x300',
-      thumbnail: 'https://placehold.co/200x150',
-      alt: 'Footlocker CGI Scene 1',
-      width: 400,
-      height: 300,
-    },
-    {
-      id: '2',
-      type: 'video' as const,
-      src: 'https://placehold.co/400x300',
-      thumbnail: 'https://placehold.co/200x150',
-      alt: 'Nike Campaign Video',
-      width: 400,
-      height: 300,
-    },
-    {
-      id: '3',
-      type: 'image' as const,
-      src: 'https://placehold.co/400x300',
-      thumbnail: 'https://placehold.co/200x150',
-      alt: 'Adidas Product Shot',
-      width: 400,
-      height: 300,
+        'Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring...',
+      image:
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
     },
     {
       id: '4',
-      type: 'image' as const,
-      src: 'https://placehold.co/400x300',
-      thumbnail: 'https://placehold.co/200x150',
-      alt: 'Brand Guidelines',
-      width: 400,
-      height: 300,
+      title: 'Other Project TEMPLATE',
+      description:
+        'Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring...',
+      image:
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
     },
   ]
 
-  const mockRecentUpdates = [
-    {
-      id: '1',
-      type: 'comment' as const,
-      message: 'New comment on Footlocker project',
-      project: 'Footlocker CGI production',
-      time: '2 hours ago',
-      user: 'John Doe',
-    },
-    {
-      id: '2',
-      type: 'milestone' as const,
-      message: 'Milestone completed: Concept Design',
-      project: 'Footlocker CGI production',
-      time: '4 hours ago',
-      user: 'Jane Smith',
-    },
-    {
-      id: '3',
-      type: 'asset' as const,
-      message: 'New asset uploaded',
-      project: 'Nike Brand Campaign',
-      time: '1 day ago',
-      user: 'Bob Johnson',
-    },
-  ]
-
-  const mockStats = {
-    activeProjects: 3,
-    completedProjects: 12,
-    totalAssets: 47,
-    pendingReviews: 5,
+  const handleCreateTemplate = () => {
+    router.push('/dashboard/client/project/new')
   }
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query)
-    console.log('Searching for:', query)
+  const handleSelectTemplate = (template: any) => {
+    router.push(`/dashboard/client/project/${template.id}`)
   }
 
-  const handleProjectClick = (projectId: string) => {
-    console.log('Navigate to project:', projectId)
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="flex items-center space-x-2">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span>Carregando dados do cliente...</span>
+          </div>
+        </div>
+      </DashboardLayout>
+    )
   }
 
-  const handleNewProject = () => {
-    console.log('Create new project')
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="flex items-center space-x-2 text-red-600">
+            <AlertCircle className="h-6 w-6" />
+            <span>Erro: {error}</span>
+          </div>
+        </div>
+      </DashboardLayout>
+    )
+  }
+
+  if (!client) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold mb-2">
+              Cliente não encontrado
+            </h2>
+            <p className="text-muted-foreground">
+              Não foi possível encontrar os dados do cliente associado à sua
+              conta.
+            </p>
+          </div>
+        </div>
+      </DashboardLayout>
+    )
+  }
+
+  // Projeto em destaque (primeiro projeto ativo ou o mais recente)
+  const featuredProject =
+    projects.find((p: any) => p.status === 'in_progress') || projects[0]
+
+  // Assets recentes (últimos 6)
+  const recentAssets = assets.slice(0, 6)
+
+  // Milestones próximos (próximos 5 dias)
+  const upcomingMilestones = milestones
+    .filter((m: any) => m.status === 'pending' && m.due_date)
+    .filter((m: any) => {
+      const dueDate = new Date(m.due_date!)
+      const today = new Date()
+      const diffTime = dueDate.getTime() - today.getTime()
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      return diffDays >= 0 && diffDays <= 5
+    })
+    .sort(
+      (a: any, b: any) =>
+        new Date(a.due_date!).getTime() - new Date(b.due_date!).getTime()
+    )
+    .slice(0, 5)
+
+  if (!client) {
+    // Dados de template para novos clientes
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold mb-2">
+              Cliente não encontrado
+            </h2>
+            <p className="text-muted-foreground">
+              Não foi possível encontrar os dados do cliente associado à sua
+              conta.
+            </p>
+          </div>
+        </div>
+      </DashboardLayout>
+    )
   }
 
   return (
-    <RoleGuard allowedRoles={['client_admin', 'client_member', 'guest']}>
-      {/* SECTION 1 */}
-      <section className="mb-12 w-full max-w-5xl mx-auto px-2 sm:px-4 md:px-8 flex flex-col items-center justify-center pt-8">
-        <SearchBar
-          onSearch={handleSearch}
-          placeholder="Search for projects or assets"
-        />
-      </section>
-
-      {/* SECTION 3 - movida para cima */}
-      <section className="mb-16 w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {mockProjects.map((project, idx) => (
-            <div key={project.id} className="flex">
-              <ProjectCard {...project} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION 2 */}
-      <section className="mb-16 w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-8">
-        <div className="mb-10">
-          <div className="w-full">
-            <FeaturedProjectBanner project={mockProjects[0]} />
+    <DashboardLayout>
+      <div className="space-y-2">
+        {/* Campo de busca alinhado à esquerda */}
+        <div className="py-4 pl-6 mb-2">
+          <div className="w-full max-w-md">
+            <SearchBar placeholder="Buscar projetos, assets..." />
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            'CGI Project',
-            'Animation Project',
-            'Branding Project',
-            'Other Project',
-          ].map((title, idx) => (
-            <div
-              key={title}
-              className="rounded-2xl shadow bg-gradient-to-b from-zinc-900/80 to-black p-0 flex flex-col justify-end items-start min-h-[260px] max-w-full hover:shadow-lg transition-shadow"
-            >
-              <ProjectTemplate
-                title={title + ' TEMPLATE'}
-                description="Currently in production a CGI video for FootlockerFootlockerFootlocker featuring"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* SECTION 4 */}
-      <section className="mb-12 w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="rounded-xl shadow p-6 flex flex-col items-start bg-white hover:shadow-md transition-shadow"
-            >
-              <span className="text-gray-800 font-semibold mb-1">
-                Marathon Videos CGI production
-              </span>
-              <span className="text-gray-400 text-xs mb-1">4 Projects</span>
-              <span className="text-gray-400 text-xs">24 Assets</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION 5 */}
-      <section className="mb-20 w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-8">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2">
-            Footlocker CGI production
-          </h2>
-          <p className="text-gray-500 mb-4">
-            Currently in production a CGI video for
-            FootlockerFootlockerFootlocker featuring
-          </p>
-          <button className="inline-flex items-center px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors shadow">
-            VIEW PROJECT
-          </button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mockAssets.slice(0, 4).map((asset) => (
-            <div
-              key={asset.id}
-              className="rounded-xl shadow p-4 flex items-center justify-center min-h-[160px] hover:shadow-md transition-shadow"
-            >
-              <img
-                src={asset.thumbnail}
-                alt={asset.alt}
-                className="object-cover rounded max-h-40 w-full"
+        {/* Grid horizontal dos 3 primeiros cards */}
+        <div className="mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {projects.slice(0, 3).map((project: any) => (
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.name}
+                description={project.description}
+                status={project.status}
+                progress={project.progress || 0}
+                dueDate={project.due_date}
+                teamMembers={teamMembers.slice(0, 4).map((member: any) => ({
+                  id: member.id,
+                  name: member.name,
+                  avatar: member.avatar_url || 'https://placehold.co/32x32',
+                }))}
+                milestones={milestones
+                  .filter((m: any) => m.project_id === project.id)
+                  .slice(0, 4)
+                  .map((m: any) => ({
+                    id: m.id,
+                    name: m.name,
+                    status: m.status,
+                  }))}
               />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
-    </RoleGuard>
+        <div className="h-8 md:h-12" />
+
+        {/* Featured Project Banner */}
+        {featuredProject && (
+          <FeaturedProjectBanner
+            project={{
+              id: featuredProject.id,
+              title: featuredProject.name,
+              description: featuredProject.description,
+              status: featuredProject.status,
+              progress: featuredProject.progress || 0,
+              dueDate: featuredProject.due_date,
+              teamMembers: teamMembers.slice(0, 4).map((member: any) => ({
+                id: member.id,
+                name: member.name,
+                avatar: member.avatar_url || 'https://placehold.co/32x32',
+              })),
+              image:
+                'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
+            }}
+          />
+        )}
+
+        {/* Templates Section */}
+        <TemplatesSection
+          templates={templates}
+          onCreateTemplate={handleCreateTemplate}
+          onSelectTemplate={handleSelectTemplate}
+        />
+
+        {/* Project Templates (mock) */}
+        <div className="w-full py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <ProjectTemplate
+              title="Footlocker CGI production"
+              description="Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring..."
+              image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=900&q=80"
+              onClick={() => alert('Ver projeto 1')}
+            />
+            <ProjectTemplate
+              title="Footlocker CGI production"
+              description="Currently in production: a CGI video for Footlocker/Footlocker/Footlocker featuring..."
+              image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=900&q=80"
+              onClick={() => alert('Ver projeto 2')}
+            />
+          </div>
+        </div>
+
+        {/* Atualizações Recentes */}
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold">Atualizações Recentes</h2>
+          <div className="grid gap-4">
+            {projects.slice(0, 2).map((project: any) => (
+              <RecentUpdateCard
+                key={project.id}
+                id={project.id}
+                type="comment"
+                message={`Projeto "${project.name}" atualizado - Status: ${
+                  project.status === 'in_progress'
+                    ? 'Em andamento'
+                    : project.status === 'completed'
+                    ? 'Concluído'
+                    : project.status === 'draft'
+                    ? 'Rascunho'
+                    : 'Proposta'
+                }`}
+                project={project.name}
+                time={new Date(project.updated_at).toLocaleDateString('pt-BR')}
+                user="Sistema"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
   )
 }

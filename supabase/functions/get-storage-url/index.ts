@@ -1,36 +1,32 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type'
 };
-serve(async (req)=>{
+Deno.serve(async (req)=>{
   if (req.method === 'OPTIONS') {
     return new Response('ok', {
       headers: corsHeaders
     });
   }
   try {
-    const { type, recipientId, data } = await req.json();
-    // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    // Create notification in database
-    const { error } = await supabase.from('notifications').insert({
-      recipient_id: recipientId,
-      type,
-      ...data
-    });
-    if (error) throw error;
-    // TODO: Implement email/push notification sending
+    const supabase = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_ANON_KEY') ?? '');
+    const { filePath } = await req.json();
+    if (!filePath) {
+      throw new Error('File path is required');
+    }
+    const { data: { publicUrl }, error } = await supabase.storage.from('uploads').getPublicUrl(filePath);
+    if (error) {
+      throw error;
+    }
     return new Response(JSON.stringify({
-      success: true
+      url: publicUrl
     }), {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/json'
-      }
+      },
+      status: 200
     });
   } catch (error) {
     return new Response(JSON.stringify({

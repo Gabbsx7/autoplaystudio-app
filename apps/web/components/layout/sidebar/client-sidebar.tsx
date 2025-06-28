@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronRight,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 interface FolderItem {
   id: string
@@ -26,6 +27,7 @@ export function ClientSidebar({ className }: ClientSidebarProps) {
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
     new Set(['subclients'])
   )
+  const router = useRouter()
 
   // Mock data baseado no Figma
   const folderStructure: FolderItem[] = [
@@ -59,7 +61,10 @@ export function ClientSidebar({ className }: ClientSidebarProps) {
     <div className={`flex flex-col h-full min-h-0 bg-white ${className || ''}`}>
       {/* Files Section */}
       <div className="flex-1 flex flex-col rounded-xl bg-white border border-zinc-100 shadow-sm mb-4 overflow-hidden">
-        <div className="px-4 py-3 border-b border-zinc-100 flex items-center gap-2">
+        <div
+          className="px-4 py-3 border-b border-zinc-100 flex items-center gap-2 cursor-pointer hover:bg-zinc-50 transition-colors"
+          onClick={() => router.push('/dashboard/assets')}
+        >
           <Folder className="w-5 h-5 text-gray-600" />
           <span className="text-base font-semibold text-black">Files</span>
         </div>
@@ -68,7 +73,12 @@ export function ClientSidebar({ className }: ClientSidebarProps) {
             <div key={folder.id}>
               <div
                 className="flex items-center gap-2 cursor-pointer py-2 px-2 rounded hover:bg-zinc-50 transition-colors"
-                onClick={() => folder.children && toggleFolder(folder.id)}
+                onClick={() => {
+                  if (folder.children) {
+                    toggleFolder(folder.id)
+                  }
+                  router.push('/dashboard/assets')
+                }}
               >
                 {folder.children &&
                   (expandedFolders.has(folder.id) ? (
@@ -87,6 +97,7 @@ export function ClientSidebar({ className }: ClientSidebarProps) {
                     <div
                       key={subfolder.id}
                       className="flex items-center gap-2 py-1 px-2 rounded hover:bg-zinc-50 cursor-pointer"
+                      onClick={() => router.push('/dashboard/assets')}
                     >
                       <Folder className="w-3 h-3 text-gray-500" />
                       <span className="text-xs text-zinc-700">
