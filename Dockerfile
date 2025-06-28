@@ -26,7 +26,7 @@ RUN pnpm install --frozen-lockfile --prefer-offline
 # Copy source code
 COPY apps/web ./apps/web
 
-# Build the application
+# Build the application from apps/web directory
 WORKDIR /app/apps/web
 RUN pnpm build
 
@@ -41,5 +41,6 @@ USER nextjs
 
 EXPOSE 3000
 
-# Start the application
-CMD ["pnpm", "start"] 
+# Start the application with explicit working directory
+WORKDIR /app/apps/web
+CMD ["node_modules/.bin/next", "start"] 
