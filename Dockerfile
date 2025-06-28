@@ -11,6 +11,7 @@ RUN npm install -g pnpm
 # Copy workspace files
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/web/package.json ./apps/web/package.json
+COPY packages ./packages
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile --prefer-offline
@@ -22,7 +23,7 @@ WORKDIR /app
 # Install pnpm
 RUN npm install -g pnpm
 
-# Copy workspace configuration
+# Copy workspace configuration and dependencies
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY --from=deps /app/node_modules ./node_modules
 
@@ -36,16 +37,11 @@ ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
 ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-# Build the application
-WORKDIR /app/apps/web
-RUN echo "Starting build process..."
-RUN echo "Environment variables:"
-RUN echo "NEXT_PUBLIC_SUPABASE_URL: $NEXT_PUBLIC_SUPABASE_URL"
-RUN echo "NEXT_PUBLIC_SUPABASE_ANON_KEY: $NEXT_PUBLIC_SUPABASE_ANON_KEY"
-RUN ls -la
-RUN echo "Building with pnpm..."
-RUN pnpm build
-RUN echo "Build completed successfully!"
+# Install all dependencies including Next.js in the workspace
+RUN pnpm install --frozen-lockfile --prefer-offline
+
+# Build the application from root directory
+RUN cd apps/web && pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
