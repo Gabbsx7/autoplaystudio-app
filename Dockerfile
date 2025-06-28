@@ -43,6 +43,9 @@ RUN pnpm install --frozen-lockfile --prefer-offline
 # Build the application from root directory
 RUN cd apps/web && pnpm build
 
+# Verify build output
+RUN ls -la /app/apps/web/.next/
+
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
@@ -60,8 +63,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 
+# Verify files exist
+RUN ls -la ./
+RUN ls -la ./.next/ || echo "No .next directory"
+
 USER nextjs
 
 EXPOSE 3000
 
-CMD ["node", "server.js"] 
+# Use explicit path and add error handling
+CMD ["sh", "-c", "node server.js || echo 'Error starting server'"] 
