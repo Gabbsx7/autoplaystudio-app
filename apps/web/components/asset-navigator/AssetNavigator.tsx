@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { X, Search, Folder, FileImage, Play, FileText } from 'lucide-react'
+import { X, Search, Folder } from 'lucide-react'
 import { FolderItem } from './FolderItem'
 import { MilestoneGrid } from './MilestoneGrid'
 import { AssetList } from './AssetList'

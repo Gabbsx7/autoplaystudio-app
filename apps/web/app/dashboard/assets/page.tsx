@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import {
   ArrowLeft,
@@ -15,11 +16,10 @@ import {
   FileText,
 } from 'lucide-react'
 import { FolderItem } from '@/components/asset-navigator/FolderItem'
-import { MilestoneGrid } from '@/components/asset-navigator/MilestoneGrid'
-import { AssetList } from '@/components/asset-navigator/AssetList'
 
 export default function AssetsPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedView, setSelectedView] = useState<
     'folders' | 'milestones' | 'assets'
@@ -30,38 +30,16 @@ export default function AssetsPage() {
   const [selectedMilestoneId, setSelectedMilestoneId] = useState<string | null>(
     null
   )
-  const [activeTab, setActiveTab] = useState<'projects' | 'folders'>('projects')
+  const [activeTab, setActiveTab] = useState<'projects' | 'folders'>('folders')
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [selectedItemContent, setSelectedItemContent] = useState<any[]>([])
 
   // For now, assuming client user
   const isStudioUser = false // TODO: get from auth context
 
-  // Function to get content of selected item (milestones and assets)
-  const getItemContent = (item: any): any[] => {
-    if (!item || !item.children) return []
-
-    // Flatten all children (milestones and assets)
-    const content: any[] = []
-
-    const addItemsRecursively = (items: any[]) => {
-      items.forEach((child) => {
-        if (child.type === 'milestone' || child.type === 'asset') {
-          content.push(child)
-        }
-        if (child.children && child.children.length > 0) {
-          addItemsRecursively(child.children)
-        }
-      })
-    }
-
-    addItemsRecursively(item.children)
-    return content
-  }
-
   const handleItemSelect = (item: any) => {
     setSelectedItem(item)
-    setSelectedItemContent(getItemContent(item))
+    setSelectedItemContent(item.children || [])
   }
 
   const handleAssetSelect = (
@@ -73,6 +51,145 @@ export default function AssetsPage() {
     // Navigate to asset detail page
     router.push(`/dashboard/assets/${assetId}`)
   }
+
+  const getRootItems = () => {
+    if (activeTab === 'folders') {
+      return [
+        {
+          id: 'all-folders',
+          name: 'All Folders',
+          type: 'folder',
+          children: [
+            {
+              id: 'projects-folder',
+              name: 'Projects',
+              type: 'folder',
+              children: [
+                {
+                  id: 'marathon',
+                  name: 'Marathon',
+                  type: 'project',
+                  children: [],
+                },
+              ],
+            },
+            {
+              id: 'collections-folder',
+              name: 'Collections',
+              type: 'folder',
+              children: [
+                {
+                  id: 'brand-assets',
+                  name: 'Brand Assets',
+                  type: 'folder',
+                  children: [],
+                },
+              ],
+            },
+            {
+              id: 'finished-projects',
+              name: 'Finished Projects',
+              type: 'folder',
+              children: [],
+            },
+            {
+              id: 'assets-folder',
+              name: 'Assets',
+              type: 'folder',
+              children: [],
+            },
+          ],
+        },
+        {
+          id: 'apps-root',
+          name: 'Apps',
+          type: 'folder',
+          children: [
+            {
+              id: 'mobile-app',
+              name: 'Mobile App',
+              type: 'folder',
+              children: [],
+            },
+            {
+              id: 'web-app',
+              name: 'Web App',
+              type: 'folder',
+              children: [],
+            },
+          ],
+        },
+        {
+          id: 'another-collection-root',
+          name: 'Another Collection',
+          type: 'folder',
+          children: [
+            {
+              id: 'sub-collection-1',
+              name: 'Sub Collection 1',
+              type: 'folder',
+              children: [],
+            },
+          ],
+        },
+      ]
+    } else {
+      // Projects tab
+      return [
+        {
+          id: 'marathon-project',
+          name: 'Marathon Project',
+          type: 'project',
+          children: [
+            {
+              id: 'milestone-1',
+              name: 'Phase 1',
+              type: 'milestone',
+              status: 'completed',
+              children: [],
+            },
+            {
+              id: 'milestone-2',
+              name: 'Phase 2',
+              type: 'milestone',
+              status: 'in-progress',
+              children: [],
+            },
+          ],
+        },
+        {
+          id: 'brand-refresh',
+          name: 'Brand Refresh',
+          type: 'project',
+          children: [],
+        },
+      ]
+    }
+  }
+
+  // Handle URL parameters for pre-selection
+  React.useEffect(() => {
+    const selectedId = searchParams.get('selected')
+    if (selectedId && !selectedItem) {
+      // Find and select the item with this ID from our mock data
+      const findItemById = (items: any[], id: string): any => {
+        for (const item of items) {
+          if (item.id === id) return item
+          if (item.children) {
+            const found = findItemById(item.children, id)
+            if (found) return found
+          }
+        }
+        return null
+      }
+
+      const rootItems = getRootItems()
+      const foundItem = findItemById(rootItems, selectedId)
+      if (foundItem) {
+        handleItemSelect(foundItem)
+      }
+    }
+  }, [searchParams, selectedItem])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -124,7 +241,11 @@ export default function AssetsPage() {
                     ? 'bg-white shadow-sm'
                     : 'hover:bg-white/50'
                 }`}
-                onClick={() => setActiveTab('projects')}
+                onClick={() => {
+                  setActiveTab('projects')
+                  setSelectedItem(null)
+                  setSelectedItemContent([])
+                }}
               >
                 Projects
               </button>
@@ -134,7 +255,11 @@ export default function AssetsPage() {
                     ? 'bg-white shadow-sm'
                     : 'hover:bg-white/50'
                 }`}
-                onClick={() => setActiveTab('folders')}
+                onClick={() => {
+                  setActiveTab('folders')
+                  setSelectedItem(null)
+                  setSelectedItemContent([])
+                }}
               >
                 Folders
               </button>
@@ -159,7 +284,7 @@ export default function AssetsPage() {
                   <FolderItem
                     type="folders-root"
                     onItemSelect={handleItemSelect}
-                    initialExpanded={true}
+                    initialExpanded={false}
                   />
                 </div>
               )}
@@ -171,6 +296,21 @@ export default function AssetsPage() {
         <div className="flex-1 bg-gray-50 overflow-y-auto">
           {selectedItem ? (
             <div className="flex-1 p-6">
+              {/* Breadcrumb */}
+              <div className="flex items-center gap-2 mb-4">
+                <button
+                  onClick={() => {
+                    setSelectedItem(null)
+                    setSelectedItemContent([])
+                  }}
+                  className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to{' '}
+                  {activeTab === 'folders' ? 'All Folders' : 'All Projects'}
+                </button>
+              </div>
+
               {/* Header */}
               <div className="mb-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">
@@ -229,6 +369,51 @@ export default function AssetsPage() {
                     </div>
                   )}
 
+                  {/* Folders / Projects Section */}
+                  {selectedItemContent.some(
+                    (item) => item.type === 'folder' || item.type === 'project'
+                  ) && (
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900 mb-4">
+                        Folders
+                      </h3>
+                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        {selectedItemContent
+                          .filter(
+                            (item) =>
+                              item.type === 'folder' || item.type === 'project'
+                          )
+                          .map((folder) => (
+                            <div
+                              key={folder.id}
+                              className="bg-white rounded-lg border border-gray-200 p-3 hover:shadow-md transition-shadow cursor-pointer"
+                              onClick={() => handleItemSelect(folder)}
+                            >
+                              <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-2">
+                                {folder.type === 'project' ? (
+                                  <FolderOpen className="w-8 h-8 text-orange-500" />
+                                ) : (
+                                  <Folder className="w-8 h-8 text-blue-500" />
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-900 font-medium truncate">
+                                {folder.name}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {folder.type === 'project'
+                                  ? `${
+                                      folder.children?.filter(
+                                        (c: any) => c.type === 'milestone'
+                                      ).length || 0
+                                    } milestones`
+                                  : `${folder.children?.length || 0} items`}
+                              </p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Assets Section */}
                   {selectedItemContent.some(
                     (item) => item.type === 'asset'
@@ -275,18 +460,48 @@ export default function AssetsPage() {
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
                     <FolderOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">Esta pasta está vazia</p>
+                    <p className="text-gray-500">
+                      No content available for this item
+                    </p>
                   </div>
                 </div>
               )}
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <FolderOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">
-                  Select a project or folder to view its contents
-                </p>
+            <div className="flex-1 p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                {activeTab === 'folders' ? 'All Folders' : 'All Projects'}
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                {getRootItems().map((folder) => (
+                  <button
+                    key={folder.id}
+                    onClick={() => handleItemSelect(folder)}
+                    className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow flex flex-col items-center gap-3"
+                  >
+                    {folder.name === 'All Folders' && (
+                      <Folder className="w-8 h-8 text-blue-500" />
+                    )}
+                    {folder.name === 'Apps' && (
+                      <FolderOpen className="w-8 h-8 text-purple-500" />
+                    )}
+                    {folder.name === 'Another Collection' && (
+                      <Folder className="w-8 h-8 text-green-500" />
+                    )}
+                    {folder.type === 'project' && (
+                      <FolderOpen className="w-8 h-8 text-orange-500" />
+                    )}
+                    {!['All Folders', 'Apps', 'Another Collection'].includes(
+                      folder.name
+                    ) &&
+                      folder.type === 'folder' && (
+                        <Folder className="w-8 h-8 text-gray-500" />
+                      )}
+                    <span className="text-sm font-medium text-gray-900">
+                      {folder.name}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
           )}

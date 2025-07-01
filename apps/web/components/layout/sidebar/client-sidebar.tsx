@@ -1,54 +1,21 @@
 // components/layout/sidebar/client-sidebar.tsx - Responsivo
 'use client'
 
-import React, { useState } from 'react'
-import { Folder, Plus, ChevronDown, ChevronRight } from 'lucide-react'
+import React from 'react'
+import { Folder } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-
-interface FolderItem {
-  id: string
-  name: string
-  type: 'folder' | 'subfolder'
-  isOpen?: boolean
-  children?: FolderItem[]
-}
+import { FolderItem } from '@/components/asset-navigator/FolderItem'
 
 interface ClientSidebarProps {
   className?: string
 }
 
 export function ClientSidebar({ className }: ClientSidebarProps) {
-  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(['subclients'])
-  )
   const router = useRouter()
 
-  // Mock data baseado no Figma
-  const folderStructure: FolderItem[] = [
-    {
-      id: 'finished',
-      name: 'Finished Projects',
-      type: 'folder',
-    },
-    {
-      id: 'subclients',
-      name: 'Subclients (clients of the clients)',
-      type: 'folder',
-      children: [
-        { id: 'footlocker', name: 'Footlocker', type: 'subfolder' },
-        { id: 'pepsi', name: 'Pepsi Co', type: 'subfolder' },
-      ],
-    },
-  ]
-
-  const toggleFolder = (folderId: string) => {
-    const newExpanded = new Set(expandedFolders)
-    if (newExpanded.has(folderId)) {
-      newExpanded.delete(folderId)
-    } else {
-      newExpanded.add(folderId)
-    }
-    setExpandedFolders(newExpanded)
+  const handleItemSelect = (item: any) => {
+    // Navigate to the assets page with the selected item
+    router.push(`/dashboard/assets?selected=${item.id}`)
   }
 
   return (
@@ -62,51 +29,12 @@ export function ClientSidebar({ className }: ClientSidebarProps) {
           <Folder className="w-5 h-5 text-gray-600" />
           <span className="text-base font-semibold text-black">Files</span>
         </div>
-        <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
-          {folderStructure.map((folder) => (
-            <div key={folder.id}>
-              <div
-                className="flex items-center gap-2 cursor-pointer py-2 px-2 rounded hover:bg-zinc-50 transition-colors"
-                onClick={() => {
-                  if (folder.children) {
-                    toggleFolder(folder.id)
-                  }
-                  router.push('/dashboard/assets')
-                }}
-              >
-                {folder.children &&
-                  (expandedFolders.has(folder.id) ? (
-                    <ChevronDown className="w-3 h-3 text-gray-600" />
-                  ) : (
-                    <ChevronRight className="w-3 h-3 text-gray-600" />
-                  ))}
-                <Folder className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-zinc-700 font-medium flex-1">
-                  {folder.name}
-                </span>
-              </div>
-              {folder.children && expandedFolders.has(folder.id) && (
-                <div className="pl-6 space-y-1">
-                  {folder.children.map((subfolder) => (
-                    <div
-                      key={subfolder.id}
-                      className="flex items-center gap-2 py-1 px-2 rounded hover:bg-zinc-50 cursor-pointer"
-                      onClick={() => router.push('/dashboard/assets')}
-                    >
-                      <Folder className="w-3 h-3 text-gray-500" />
-                      <span className="text-xs text-zinc-700">
-                        {subfolder.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          <button className="w-full flex items-center gap-2 py-2 px-2 mt-2 text-zinc-700 hover:bg-zinc-50 rounded transition-colors text-sm">
-            <Plus className="w-4 h-4" />
-            New Folder
-          </button>
+        <div className="flex-1 overflow-y-auto px-2 py-3">
+          <FolderItem
+            type="clients-root"
+            onItemSelect={handleItemSelect}
+            initialExpanded={false}
+          />
         </div>
       </div>
     </div>

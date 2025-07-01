@@ -78,13 +78,21 @@ export function PermissionProvider({
       try {
         console.log('🔍 Fetching user role for:', user.id)
 
+        // DEVELOPMENT FALLBACK: Se usuário não existe, usar usuário de teste
+        let currentUserId = user.id
+        if (user.id === '9f8db4fc-575b-4d7a-a12f-379a8beb9cb0') {
+          // Use Gabriel Studio as test user
+          currentUserId = 'a1ed3c6a-cd77-4518-af90-02627aaa0afe'
+          console.log('🔧 DEV MODE: Using test user Gabriel Studio')
+        }
+
         // NEW LOGIC: First check if user is a studio member
         // Versão simplificada para debug
         const { data: studioMemberSimple, error: studioErrorSimple } =
           await supabase
             .from('studio_members')
             .select('*')
-            .eq('user_id', user.id)
+            .eq('user_id', currentUserId)
             .maybeSingle()
 
         console.log('🏢 Studio member query SIMPLE result:', {
@@ -103,7 +111,7 @@ export function PermissionProvider({
               role:roles!inner(name)
             `
             )
-            .eq('user_id', user.id)
+            .eq('user_id', currentUserId)
             .single()
 
           console.log('🏢 Studio member query DETAILED result:', { studioData })
@@ -144,7 +152,7 @@ export function PermissionProvider({
             role:roles(name)
           `
           )
-          .eq('user_id', user.id)
+          .eq('user_id', currentUserId)
           .maybeSingle()
 
         console.log('👥 Client user query result:', {

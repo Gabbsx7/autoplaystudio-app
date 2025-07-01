@@ -171,10 +171,108 @@ export function FolderItem({
           },
         ]
       case 'folders-root':
+        // Estrutura inspirada nas capturas do Figma
         return [
           {
-            id: 'new-collection',
-            name: 'New Collection',
+            id: 'all-folders',
+            name: 'All Folders',
+            type: 'folder',
+            children: [
+              {
+                id: 'projects-folder',
+                name: 'Projects',
+                type: 'folder',
+                children: [
+                  {
+                    id: 'marathon',
+                    name: 'Marathon',
+                    type: 'project',
+                    children: [],
+                  },
+                ],
+              },
+              {
+                id: 'collections-folder',
+                name: 'Collections',
+                type: 'folder',
+                children: [],
+              },
+              {
+                id: 'finished-projects-folder',
+                name: 'Finished Projects',
+                type: 'folder',
+                children: [
+                  {
+                    id: 'finished-project-1',
+                    name: 'Project 1',
+                    type: 'folder',
+                    children: [
+                      {
+                        id: 'sub-folder-1',
+                        name: 'Sub Folder',
+                        type: 'folder',
+                        children: [
+                          {
+                            id: 'images-folder',
+                            name: 'Images',
+                            type: 'folder',
+                            children: [],
+                          },
+                          {
+                            id: 'pdf-folder',
+                            name: 'PDF',
+                            type: 'folder',
+                            children: [],
+                          },
+                          {
+                            id: 'videos-folder',
+                            name: 'Videos',
+                            type: 'folder',
+                            children: [],
+                          },
+                        ],
+                      },
+                      {
+                        id: 'sub-folder-2',
+                        name: 'Sub Folder 1 2',
+                        type: 'folder',
+                        children: [],
+                      },
+                    ],
+                  },
+                  {
+                    id: 'finished-project-2',
+                    name: 'Project 2',
+                    type: 'folder',
+                    children: [],
+                  },
+                ],
+              },
+              {
+                id: 'assets-folder',
+                name: 'Assets',
+                type: 'folder',
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 'apps-root',
+            name: 'Apps',
+            type: 'folder',
+            children: [
+              { id: 'app-figma', name: 'Figma', type: 'folder', children: [] },
+              {
+                id: 'app-notion',
+                name: 'Notion',
+                type: 'folder',
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 'another-collection-root',
+            name: 'Another Collection',
             type: 'folder',
             children: [],
           },
